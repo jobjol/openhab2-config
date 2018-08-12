@@ -1,0 +1,13 @@
+rule "Night mode end"
+when
+  Time cron "0 0 6 * * ? *"
+then
+    Switch_Night_Mode.sendCommand(OFF)
+end
+
+rule "Night mode start"
+when
+  Time cron "0 30 22 * * ? *"
+then
+    Switch_Night_Mode.sendCommand(ON)
+end

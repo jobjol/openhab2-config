@@ -1,0 +1,200 @@
+Group MotionSetup
+Group MotionNight
+Group Setup_Motion_Duration
+Group Countdown
+
+Group Setup_Werkkamer_Plafond
+Group Setup_Overloop_Plafond
+Group Setup_Shed_Garden
+Group Setup_Shed
+Group Setup_Garden
+Group Setup_Frontdoor
+Group Setup_Front_Garden
+Group Setup_Hallway
+Group Setup_Kitchen_Table
+Group Setup_Kitchen
+Group Setup_Living_Room_Towers
+Group Setup_Bedroom
+Group Setup_Living_Room
+Group Setup_Hal_Achter
+Group Setup_Toilet
+
+Number	Motion_Max_Lumen "Maximaal licht voor beweging" (MotionSetup)
+
+Switch  Enable_Motion_Werkkamer_Plafond__Scene_Motion "Reageer op beweging" (MotionSetup, Setup_Werkkamer_Plafond) { default="OFF" }
+Switch	Enable_Motion_Overloop_Plafond__Scene_Motion "Reageer op beweging" (MotionSetup, Setup_Overloop_Plafond) { default="OFF" }
+Switch	Enable_Motion_Shed_Garden__Scene_Motion "Reageer op beweging" (MotionSetup, Setup_Shed_Garden) { default="OFF" }
+Switch	Enable_Motion_Shed__Scene_Motion "Reageer op beweging" (MotionSetup, Setup_Shed) { default="OFF" }
+Switch	Enable_Motion_Garden__Scene_Motion "#1 Reageer op beweging" (MotionSetup, Setup_Garden) { default="OFF" }
+Switch	Enable_Motion_Frontdoor_1__Scene_Motion "#1 Reageer op beweging" (MotionSetup, Setup_Frontdoor) { default="OFF" }
+Switch	Enable_Motion_Frontdoor_2__Scene_Motion "#2 Reageer op beweging" (MotionSetup, Setup_Frontdoor) { default="OFF" }
+Switch	Enable_Motion_Front_Garden_Left__Scene_Motion "Links Reageer op beweging [%s]" (MotionSetup, Setup_Front_Garden) { default="OFF" }
+Switch	Enable_Motion_Front_Garden_Right__Scene_Motion "Rechts Reageer op beweging [%s]" (MotionSetup, Setup_Front_Garden) { default="OFF" }
+Switch	Enable_Motion_Hallway__Scene_Motion "Reageer op beweging" (MotionSetup, Setup_Hallway) { default="OFF" }
+Switch	Enable_Motion_Kitchen_Table_Light__Scene_Motion "Reageer op beweging" (MotionSetup, Setup_Kitchen_Table) { default="OFF" }
+Switch	Enable_Motion_Kitchen__Scene_Motion "Reageer op beweging" (MotionSetup, Setup_Kitchen) { default="OFF" }
+Switch	Enable_Motion_Living_Room_Towers__Scene_Motion "Reageer op beweging" (MotionSetup, Setup_Living_Room_Towers) { default="OFF" }
+Switch	Enable_Motion_Bedroom_Color_Temp__Scene_Motion "Reageer op beweging" (MotionSetup, Setup_Bedroom) { default="OFF" }
+Switch	Enable_Motion_Living_Room__Scene_Motion "Reageer op beweging" (MotionSetup, Setup_Living_Room) { default="OFF" }
+Switch	Enable_Motion_Hal_Achter__Scene_Motion "Reageer op beweging" (MotionSetup, Setup_Hal_Achter) { default="OFF" }
+Switch	Enable_Motion_Toilet__Scene_Motion "Reageer op beweging" (MotionSetup, Setup_Toilet) { default="OFF" }
+
+Number  Duration_Motion_Werkkamer_Plafond__Scene_Motion (MotionSetup, Setup_Motion_Duration)
+Number	Duration_Motion_Overloop_Plafond__Scene_Motion (MotionSetup, Setup_Motion_Duration)
+Number	Duration_Motion_Shed_Garden__Scene_Motion (MotionSetup, Setup_Motion_Duration)
+Number	Duration_Motion_Shed__Scene_Motion (MotionSetup, Setup_Motion_Duration)
+Number	Duration_Motion_Garden__Scene_Motion (MotionSetup, Setup_Motion_Duration)
+Number	Duration_Motion_Frontdoor_1__Scene_Motion (MotionSetup, Setup_Motion_Duration)
+Number	Duration_Motion_Frontdoor_2__Scene_Motion (MotionSetup, Setup_Motion_Duration)
+Number	Duration_Motion_Front_Garden_Left__Scene_Motion (MotionSetup,Setup_Motion_Duration)
+Number	Duration_Motion_Front_Garden_Right__Scene_Motion (MotionSetup, Setup_Motion_Duration)
+Number	Duration_Motion_Hallway__Scene_Motion (MotionSetup, Setup_Motion_Duration)
+Number	Duration_Motion_Kitchen_Table_Light__Scene_Motion (MotionSetup, Setup_Motion_Duration)
+Number	Duration_Motion_Kitchen__Scene_Motion (MotionSetup, Setup_Motion_Duration)
+Number	Duration_Motion_Living_Room_Towers__Scene_Motion (MotionSetup, Setup_Motion_Duration)
+Number	Duration_Motion_Bedroom_Color_Temp__Scene_Motion (MotionSetup, Setup_Motion_Duration)
+Number	Duration_Motion_Living_Room__Scene_Motion (MotionSetup, Setup_Motion_Duration)
+Number	Duration_Motion_Hal_Achter__Scene_Motion (MotionSetup, Setup_Motion_Duration)
+Number	Duration_Motion_Toilet__Scene_Motion "[%d]" (MotionSetup, Setup_Motion_Duration)
+
+Number  Illumination_Motion_Werkkamer_Plafond__Scene_Motion "Maximum env. light intensity (Lumen)" (MotionSetup, Setup_Werkkamer_Plafond) { default="160" }
+Number	Illumination_Motion_Overloop_Plafond__Scene_Motion "Maximum env. light intensity (Lumen)" (MotionSetup, Setup_Overloop_Plafond) { default="160" }
+Number	Illumination_Motion_Shed_Garden__Scene_Motion "Maximum env. light intensity (Lumen)" (MotionSetup, Setup_Shed_Garden) { default="160" }
+Number	Illumination_Motion_Shed__Scene_Motion "Maximum env. light intensity (Lumen)" (MotionSetup, Setup_Shed) { default="160" }
+Number	Illumination_Motion_Garden__Scene_Motion "Maximum env. light intensity (Lumen)" (MotionSetup, Setup_Garden) { default="160" }
+Number	Illumination_Motion_Frontdoor__Scene_Motion "Maximum env. light intensity (Lumen)" (MotionSetup, Setup_Frontdoor) { default="160" }
+Number	Illumination_Motion_Front_Garden__Scene_Motion "Maximum env. light intensity (Lumen)" (MotionSetup, Setup_Front_Garden) { default="160" }
+Number	Illumination_Motion_Hallway__Scene_Motion "Maximum env. light intensity (Lumen)" (LightControls, MotionSetup, Setup_Hallway) { default="160" }
+Number	Illumination_Motion_Kitchen_Table_Light__Scene_Motion "Maximum env. light intensity (Lumen)" (MotionSetup, Setup_Kitchen_Table) { default="160" }
+Number	Illumination_Motion_Kitchen__Scene_Motion "Maximum env. light intensity (Lumen)" (MotionSetup, Setup_Kitchen) { default="160" }
+Number	Illumination_Motion_Living_Room_Towers__Scene_Motion "Maximum env. light intensity (Lumen)" (MotionSetup, Setup_Living_Room_Towers) { default="160" }
+Number	Illumination_Motion_Bedroom_Color_Temp__Scene_Motion "Maximum env. light intensity (Lumen)" (MotionSetup, Setup_Bedroom) { default="160" }
+Number	Illumination_Motion_Living_Room__Scene_Motion "Maximum env. light intensity (Lumen)" (MotionSetup, Setup_Living_Room) { default="160" }
+Number	Illumination_Motion_Hal_Achter__Scene_Motion "Maximum env. light intensity (Lumen)" (MotionSetup, Setup_Hal_Achter) { default="160" }
+Number	Illumination_Motion_Toilet__Scene_Motion "Maximum env. light intensity (Lumen)" (MotionSetup, Setup_Toilet) { default="160" }
+
+Number  Countdown_Werkkamer_Plafond__Scene_Motion "Werkkamer_Plafond [%d]" (MotionSetup, Setup_Motion_Duration, Countdown)
+Number	Countdown_Overloop_Plafond__Scene_Motion "Overloop_Plafond [%d]" (MotionSetup, Setup_Motion_Duration, Countdown)
+Number	Countdown_Shed_Garden__Scene_Motion "Shed_Garden [%d]" (MotionSetup, Setup_Motion_Duration, Countdown)
+Number	Countdown_Shed__Scene_Motion "Shed [%d]" (MotionSetup, Setup_Motion_Duration, Countdown)
+Number	Countdown_Garden__Scene_Motion "Garden [%d]" (MotionSetup, Setup_Motion_Duration, Countdown)
+Number	Countdown_Frontdoor_1__Scene_Motion "Frontdoor_1 [%d]" (MotionSetup, Setup_Motion_Duration, Countdown)
+Number	Countdown_Frontdoor_2__Scene_Motion "Frontdoor_2 [%d]" (MotionSetup, Setup_Motion_Duration, Countdown)
+Number	Countdown_Front_Garden_Left__Scene_Motion "Front_Garden_Left [%d]" (MotionSetup,Setup_Motion_Duration, Countdown)
+Number	Countdown_Front_Garden_Right__Scene_Motion "Front_Garden_Right [%d]" (MotionSetup, Setup_Motion_Duration, Countdown)
+Number	Countdown_Hallway__Scene_Motion "Hallway [%d]" (MotionSetup, Setup_Motion_Duration, Countdown)
+Number	Countdown_Kitchen_Table_Light__Scene_Motion "Kitchen_Table [%d]" (MotionSetup, Setup_Motion_Duration, Countdown)
+Number	Countdown_Kitchen__Scene_Motion "Kitchen [%d]" (MotionSetup, Setup_Motion_Duration, Countdown)
+Number	Countdown_Living_Room_Towers__Scene_Motion "Living_Room_Towers [%d]" (MotionSetup, Setup_Motion_Duration, Countdown)
+Number	Countdown_Bedroom_Color_Temp__Scene_Motion "Bedroom [%d]" (MotionSetup, Setup_Motion_Duration, Countdown)
+Number	Countdown_Living_Room__Scene_Motion "Living_Room [%d]" (MotionSetup, Setup_Motion_Duration, Countdown)
+Number	Countdown_Hal_Achter_Color__Scene_Motion "Hal_Achter [%d]" (MotionSetup, Setup_Motion_Duration, Countdown)
+Number	Countdown_Toilet__Scene_Motion "Toilet [%d]" (MotionSetup, Setup_Motion_Duration, Countdown)
+
+Dimmer  Light_Werkkamer_Plafond__Scene_Motion "Intensiteit na beweging" (LightControls, MotionSetup, Setup_Werkkamer_Plafond)
+Color   Light_Werkkamer_Plafond_color__Scene_Motion "Kleur na beweging" (LightControls, MotionSetup, Setup_Werkkamer_Plafond)
+Dimmer	Light_Werkkamer_Plafond_color_temp__Scene_Motion (LightControls, MotionSetup, Setup_Werkkamer_Plafond)
+Dimmer	Light_Overloop_Plafond__Scene_Motion "Intensiteit na beweging" (LightControls, MotionSetup, Setup_Overloop_Plafond)
+Color	  Light_Overloop_Plafond_color__Scene_Motion (LightControls, MotionSetup, Setup_Overloop_Plafond)
+Dimmer	Light_Overloop_Plafond_color_temp__Scene_Motion (LightControls, MotionSetup, Setup_Overloop_Plafond)
+Dimmer	Light_Shed_Garden__Scene_Motion "Intensiteit na beweging" (LightControls, MotionSetup, Setup_Shed_Garden)
+Dimmer	Light_Garden__Scene_Motion "#1 Intensiteit na beweging" (LightControls, MotionSetup, Setup_Garden)
+Color	  Light_Garden_color__Scene_Motion (LightControls, MotionSetup, Setup_Garden)
+Dimmer	Light_Frontdoor_1__Scene_Motion "#1 Intensiteit na beweging" (LightControls, MotionSetup, Setup_Frontdoor)
+Color	  Light_Frontdoor_1_color__Scene_Motion (LightControls, MotionSetup, Setup_Frontdoor)
+Dimmer	Light_Frontdoor_2__Scene_Motion "#2 Intensiteit na beweging" (LightControls, MotionSetup, Setup_Frontdoor)
+Color   Light_Frontdoor_2_color__Scene_Motion (LightControls, MotionSetup, Setup_Frontdoor)
+Dimmer	Light_Front_Garden_Left__Scene_Motion "Links Intensiteit na beweging" (LightControls, MotionSetup, Setup_Front_Garden)
+Dimmer	Light_Front_Garden_Right__Scene_Motion "Rechts Intensiteit na beweging" (LightControls, MotionSetup, Setup_Front_Garden)
+Dimmer	Light_Hallway__Scene_Motion "Intensiteit na beweging" (LightControls, MotionSetup, Setup_Hallway)
+Dimmer	Light_Kitchen_Table_Light__Scene_Motion "Intensiteit na beweging" (LightControls, MotionSetup, Setup_Kitchen_Table)
+Color 	Light_Kitchen_Table_Light_color__Scene_Motion (LightControls, MotionSetup, Setup_Kitchen_Table)
+Dimmer	Light_Kitchen_Table_Light_color_temp__Scene_Motion (LightControls, MotionSetup, Setup_Kitchen_Table)
+Dimmer	Light_Kitchen__Scene_Motion "Intensiteit na beweging" (LightControls, MotionSetup, Setup_Kitchen)
+Dimmer	Light_Living_Room_Towers__Scene_Motion "Intensiteit na beweging" (LightControls, MotionSetup, Setup_Living_Room_Towers)
+Dimmer	Light_Bedroom_Color_Temp__Scene_Motion (LightControls, MotionSetup, Setup_Bedroom)
+Dimmer	Light_Bedroom__Scene_Motion "Intensiteit na beweging" (LightControls, MotionSetup, Setup_Bedroom)
+Color	  Light_Bedroom_Color__Scene_Motion (LightControls, MotionSetup, Setup_Bedroom)
+Color	  Light_Living_Room_Color__Scene_Motion (LightControls, MotionSetup, Setup_Living_Room)
+Dimmer	Light_Living_Room__Scene_Motion "Intensiteit na beweging" (LightControls, MotionSetup, Setup_Living_Room)
+Color	  Light_Hal_Achter_Color__Scene_Motion (LightControls, MotionSetup, Setup_Hal_Achter)
+Dimmer	Light_Hal_Achter_Color_Temp__Scene_Motion (LightControls, MotionSetup, Setup_Hal_Achter)
+Dimmer	Light_Hal_Achter__Scene_Motion "Intensiteit na beweging" (LightControls, MotionSetup, Setup_Hal_Achter)
+Dimmer	Light_Toilet__Scene_Motion "Intensiteit na beweging" (LightControls, MotionSetup, Setup_Toilet)
+
+Switch  Enable_NightMotion_Werkkamer_Plafond__Scene_Motion "Nachtmodus" (MotionSetup, Setup_Werkkamer_Plafond) { default="OFF" }
+Switch	Enable_NightMotion_Overloop_Plafond__Scene_Motion "Nachtmodus" (MotionSetup, Setup_Overloop_Plafond) { default="OFF" }
+Switch	Enable_NightMotion_Shed_Garden__Scene_Motion "Nachtmodus" (MotionSetup, Setup_Shed_Garden) { default="OFF" }
+Switch	Enable_NightMotion_Garden__Scene_Motion "#1 Nachtmodus" (MotionSetup, Setup_Garden) { default="OFF" }
+Switch	Enable_NightMotion_Frontdoor_1__Scene_Motion "#1 Nachtmodus" (MotionSetup, Setup_Frontdoor) { default="OFF" }
+Switch	Enable_NightMotion_Frontdoor_2__Scene_Motion "#2 Nachtmodus" (MotionSetup, Setup_Frontdoor) { default="OFF" }
+Switch	Enable_NightMotion_Front_Garden_Left__Scene_Motion "Links Nachtmodus" (MotionSetup, Setup_Front_Garden) { default="OFF" }
+Switch	Enable_NightMotion_Front_Garden_Right__Scene_Motion "Rechts Nachtmodus" (MotionSetup, Setup_Front_Garden) { default="OFF" }
+Switch	Enable_NightMotion_Hallway__Scene_Motion "Nachtmodus" (MotionSetup, Setup_Hallway) { default="OFF" }
+Switch	Enable_NightMotion_Kitchen_Table_Light__Scene_Motion "Nachtmodus" (MotionSetup, Setup_Kitchen_Table) { default="OFF" }
+Switch	Enable_NightMotion_Kitchen__Scene_Motion "Nachtmodus" (MotionSetup, Setup_Kitchen) { default="OFF" }
+Switch	Enable_NightMotion_Living_Room_Towers__Scene_Motion "Nachtmodus" (MotionSetup, Setup_Living_Room_Towers) { default="OFF" }
+Switch	Enable_NightMotion_Bedroom_Color_Temp__Scene_Motion "Nachtmodus" (MotionSetup, Setup_Bedroom) { default="OFF" }
+Switch	Enable_NightMotion_Living_Room__Scene_Motion "Nachtmodus" (MotionSetup, Setup_Living_Room) { default="OFF" }
+Switch	Enable_NightMotion_Hal_Achter_Color__Scene_Motion "Nachtmodus" (MotionSetup, Setup_Hal_Achter) { default="OFF" }
+Switch	Enable_NightMotion_Toilet__Scene_Motion "Nachtmodus" (MotionSetup, Setup_Toilet) { default="OFF" }
+
+Dimmer  Light_Werkkamer_Plafond__Scene_Motion_Night "Intensiteit na beweging nacht" (LightControls, MotionNight, Setup_Werkkamer_Plafond)
+Color   Light_Werkkamer_Plafond_color__Scene_Motion_Night "Kleur na beweging nacht" (LightControls, MotionNight, Setup_Werkkamer_Plafond)
+Dimmer	Light_Overloop_Plafond__Scene_Motion_Night "Intensiteit na beweging nacht" (LightControls, MotionNight, Setup_Overloop_Plafond)
+Color	  Light_Overloop_Plafond_color__Scene_Motion_Night "Kleur na beweging nacht" (LightControls, MotionNight, Setup_Overloop_Plafond)
+Dimmer	Light_Shed_Garden__Scene_Motion_Night "Intensiteit na beweging nacht"  (LightControls, MotionNight, Setup_Shed_Garden)
+Dimmer	Light_Garden__Scene_Motion_Night "#1 Intensiteit na beweging nacht"  (LightControls, MotionNight, Setup_Garden)
+Color	  Light_Garden_color__Scene_Motion_Night "#1 Kleur na beweging nacht" (LightControls, MotionNight, Setup_Garden)
+Dimmer	Light_Frontdoor_1__Scene_Motion_Night "Intensiteit na beweging nacht" (LightControls, MotionNight, Setup_Frontdoor)
+Color	  Light_Frontdoor_1_color__Scene_Motion_Night "Kleur na beweging nacht" (LightControls, MotionNight, Setup_Frontdoor)
+Dimmer	Light_Frontdoor_2__Scene_Motion_Night "Intensiteit na beweging nacht" (LightControls, MotionNight, Setup_Frontdoor)
+Color   Light_Frontdoor_2_color__Scene_Motion_Night "Kleur na beweging nacht" (LightControls, MotionNight, Setup_Frontdoor)
+Dimmer	Light_Front_Garden_Left__Scene_Motion_Night "Links Intensiteit na beweging nacht" (LightControls, MotionNight, Setup_Front_Garden)
+Dimmer	Light_Front_Garden_Right__Scene_Motion_Night "Rechts Intensiteit na beweging nacht" (LightControls, MotionNight, Setup_Front_Garden)
+Dimmer	Light_Hallway__Scene_Motion_Night "Intensiteit na beweging nacht" (LightControls, MotionNight, Setup_Hallway)
+Dimmer	Light_Kitchen_Table_Light__Scene_Motion_Night "Intensiteit na beweging nacht" (LightControls, MotionNight, Setup_Kitchen_Table)
+Color 	Light_Kitchen_Table_Light_color__Scene_Motion_Night "Kleur na beweging nacht" (LightControls, MotionNight, Setup_Kitchen_Table)
+Dimmer	Light_Kitchen__Scene_Motion_Night "Intensiteit na beweging nacht" (LightControls, MotionNight, Setup_Kitchen)
+Dimmer	Light_Living_Room_Towers__Scene_Motion_Night "Intensiteit na beweging nacht" (LightControls, MotionNight, Setup_Living_Room_Towers)
+Dimmer	Light_Bedroom__Scene_Motion_Night "Intensiteit na beweging nacht" (LightControls, MotionNight, Setup_Bedroom)
+Color	  Light_Bedroom_Color__Scene_Motion_Night "Kleur na beweging nacht" (LightControls, MotionNight, Setup_Bedroom)
+Color	  Light_Living_Room_Color__Scene_Motion_Night "Kleur na beweging nacht" (LightControls, MotionNight, Setup_Living_Room)
+Dimmer	Light_Living_Room__Scene_Motion_Night "Intensiteit na beweging nacht" (LightControls, MotionNight, Setup_Living_Room)
+Color	  Light_Hal_Achter_Color__Scene_Motion_Night "Kleur na beweging nacht" (LightControls, MotionNight, Setup_Hal_Achter)
+Dimmer	Light_Hal_Achter__Scene_Motion_Night "Intensiteit na beweging nacht" (LightControls, MotionNight, Setup_Hal_Achter)
+Dimmer	Light_Toilet__Scene_Motion_Night "Intensiteit na beweging nacht" (LightControls, MotionNight, Setup_Toilet)
+
+Dimmer  Fadein_Werkkamer_Plafond__Scene_Motion "Fade-in tijd in 1/10 sec. [%s]" (Setup_Werkkamer_Plafond) { default="0" }
+Dimmer	Fadein_Overloop_Plafond__Scene_Motion "Fade-in tijd in 1/10 sec." (Setup_Overloop_Plafond) { default="0" }
+Dimmer	Fadein_Shed_Garden__Scene_Motion "Fade-in tijd in 1/10 sec."  (Setup_Shed_Garden) { default="0" }
+Dimmer	Fadein_Garden__Scene_Motion_Night "Fade-in tijd in 1/10 sec."  (Setup_Garden) { default="0" }
+Dimmer	Fadein_Frontdoor__Scene_Motion "Fade-in tijd in 1/10 sec." (Setup_Frontdoor) { default="0" }
+Dimmer	Fadein_Front_Garden__Scene_Motion "Fade-in tijd in 1/10 sec." (Setup_Front_Garden) { default="0" }
+Dimmer	Fadein_Hallway__Scene_Motion "Fade-in tijd in 1/10 sec." (Setup_Hallway) { default="0" }
+Dimmer	Fadein_Kitchen_Table_Light__Scene_Motion "Fade-in tijd in 1/10 sec." (Setup_Kitchen_Table) { default="0" }
+Dimmer	Fadein_Kitchen__Scene_Motion "Fade-in tijd in 1/10 sec." (Setup_Kitchen) { default="0" }
+Dimmer	Fadein_Living_Room_Towers__Scene_Motion "Fade-in tijd in 1/10 sec." (Setup_Living_Room_Towers) { default="0" }
+Dimmer	Fadein_Bedroom__Scene_Motion "Fade-in tijd in 1/10 sec." (Setup_Bedroom) { default="0" }
+Dimmer	Fadein_Bedroom_Color__Scene_Motion "Fade-in tijd in 1/10 sec." (Setup_Bedroom) { default="0" }
+Dimmer	Fadein_Living_Room_Color__Scene_Motion "Fade-in tijd in 1/10 sec." (Setup_Living_Room) { default="0" }
+Dimmer	Fadein_Living_Room__Scene_Motion "Fade-in tijd in 1/10 sec." (Setup_Living_Room) { default="0" }
+Dimmer	Fadein_Hal_Achter_Color__Scene_Motion "Fade-in tijd in 1/10 sec." (Setup_Hal_Achter) { default="0" }
+Dimmer	Fadein_Toilet__Scene_Motion "Fade-in tijd in 1/10 sec. [%.1f]" <fade> (Setup_Toilet) { default="0" }
+
+Dimmer  Fadeout_Werkkamer_Plafond__Scene_Motion "Fade-out tijd [%s seconden]" (Setup_Werkkamer_Plafond) { default="0" }
+Dimmer	Fadeout_Overloop_Plafond__Scene_Motion "Fade-out tijd [%s seconden]" (Setup_Overloop_Plafond) { default="0" }
+Dimmer	Fadeout_Shed_Garden__Scene_Motion "Fade-out tijd [%s seconden]"  (Setup_Shed_Garden) { default="0" }
+Dimmer	Fadeout_Garden__Scene_Motion_Night "Fade-out tijd [%s seconden]"  (Setup_Garden) { default="0" }
+Dimmer	Fadeout_Frontdoor__Scene_Motion "Fade-out tijd [%s seconden]" (Setup_Frontdoor) { default="0" }
+Dimmer	Fadeout_Front_Garden__Scene_Motion "Fade-out tijd [%s seconden]" (Setup_Front_Garden) { default="0" }
+Dimmer	Fadeout_Hallway__Scene_Motion "Fade-out tijd [%s seconden]" (Setup_Hallway) { default="0" }
+Dimmer	Fadeout_Kitchen_Table_Light__Scene_Motion "Fade-out tijd [%s seconden]" (Setup_Kitchen_Table) { default="0" }
+Dimmer	Fadeout_Kitchen__Scene_Motion "Fade-out tijd [%s seconden]" (Setup_Kitchen) { default="0" }
+Dimmer	Fadeout_Living_Room_Towers__Scene_Motion "Fade-out tijd [%s seconden]" (Setup_Living_Room_Towers) { default="0" }
+Dimmer	Fadeout_Bedroom__Scene_Motion "Fade-out tijd [%s seconden]" (Setup_Bedroom) { default="0" }
+Dimmer	Fadeout_Bedroom_Color__Scene_Motion "Fade-out tijd [%s seconden]" (Setup_Bedroom) { default="0" }
+Dimmer	Fadeout_Living_Room_Color__Scene_Motion "Fade-out tijd [%s seconden]" (Setup_Living_Room) { default="0" }
+Dimmer	Fadeout_Living_Room__Scene_Motion "Fade-out tijd [%s seconden]" (Setup_Living_Room) { default="0" }
+Dimmer	Fadeout_Hal_Achter__Scene_Motion "Fade-out tijd [%s seconden]" (Setup_Hal_Achter) { default="0" }
+Dimmer	Fadeout_Toilet__Scene_Motion "Fade-out tijd [%s seconden]" <fade> (Setup_Toilet) { default="0" }

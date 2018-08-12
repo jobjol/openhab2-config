@@ -1,0 +1,326 @@
+import org.openhab.core.library.types.*
+import org.openhab.core.library.items.*
+import org.openhab.core.types.*
+import org.openhab.core.persistence.*
+import org.openhab.model.script.actions.*
+import org.openhab.core.items.*
+import java.util.regex.*
+import java.util.String
+import java.util.Calendar
+import java.util.Date
+import java.util.HashMap
+import java.util.LinkedHashMap
+import java.util.ArrayList
+import java.util.Map
+import org.eclipse.xtext.xbase.lib.*
+
+// CONSTANTS
+var String 	SCENE_ITEM_BASE_NAME 		= "CNF_SCENE_Scene"
+var String 	CONFIG_ITEM_PREFIX 		= "Light_"
+var String 	ROOM_IGNORE_PREFIX 		= "CNF_SCENE_Ignore_"
+var String 	ITEM_SEPARATOR 			= ";"
+var String 	INFO_SEPARATOR 			= ":"
+var int		ACTION_RESET_CONF		= 2
+var int		ACTION_SAVE_CONF		= 3
+var int		ACTION_SAVE_ACTUAL_STATUS	= 4
+var int		ACTION_SCENE_TEST		= 5
+
+var String 	stempConfigStr 		= ""
+
+var String 	sItemID 		= ""
+var String 	sSceneItemName		= ""
+var String 	itemClassName 		= ""
+
+var boolean	bIgnoreItem 		= false
+var String	sSceneConf 		= ""
+var String	sMsgToSay		= ""
+
+var Timer 	timerResetStatus 	= null
+
+
+var java.util.concurrent.locks.ReentrantLock lock  = new java.util.concurrent.locks.ReentrantLock()
+
+// System Started Rule: Initialize some items
+rule "System Started"
+when
+	System started
+then
+	CNF_SCENE_EditMode.postUpdate(OFF)
+	CNF_SCENE_Action.postUpdate(0)
+	CNF_SCENE_EditingSceneNum.postUpdate(0)
+	CNF_SCENE_Ignore_ROOM1.postUpdate(OFF)
+	CNF_SCENE_Ignore_ROOM2.postUpdate(OFF)
+	CNF_SCENE_Ignore_ROOM3.postUpdate(OFF)
+end
+
+rule "SCENE Configuration"
+when
+	Item CNF_SCENE_Action received command
+then
+	//lock.lock()
+	//try {
+		logInfo("SCENE","---> SCENE RULE STARTED <-----")
+		stempConfigStr = ""
+
+		switch (CNF_SCENE_Action.state) {
+			//--------------------------------------------------------------------------
+			// RESET ACTUAL CONFIGURATION
+			case ACTION_RESET_CONF: {
+				logInfo("SCENE","Action Received:" + "ACTION_RESET_CONF")
+				gSceneConfig?.members.forEach[configItem|
+					itemClassName = configItem.getClass().getName()
+					logInfo("SCENE","--configItem (" + configItem.name + ") is a = (" + itemClassName + ")")
+					//if (configItem instanceof SwitchItem) {
+					if (itemClassName.contains("SwitchItem")) {
+						logInfo("SCENE","SWITCH_ITEM--ItemNAME (" + configItem.name + ")")
+						configItem.sendCommand(OFF)
+					}
+					//else if (configItem instanceof DimmerItem){
+					else if (itemClassName.contains("DimmerItem")) {
+						logInfo("SCENE","DIMMER_ITEM--ItemNAME (" + configItem.name + ")")
+						configItem.sendCommand(0)
+					}
+					//else if (configItem instanceof ColorItem){
+					else if (itemClassName.contains("ColorItem")) {
+						logInfo("SCENE","COLOR_ITEM--ItemNAME (" + configItem.name + ")")
+						configItem.sendCommand("0.0,0.0,0.0")
+					}
+				]
+				stempConfigStr = ""
+				sSceneItemName = SCENE_ITEM_BASE_NAME + CNF_SCENE_EditingSceneNum.state.toString
+				gScenes?.allMembers.filter(s | s.name.contains(sSceneItemName)).forEach[sceneItem|
+					sendCommand(sceneItem as StringItem, stempConfigStr)
+				]
+
+				// Update status
+				CNF_SCENE_Result.postUpdate("Scene Resetted")
+				CNF_SCENE_ResultReset.sendCommand(ON)
+			}
+			//--------------------------------------------------------------------------
+			// SAVE ACTUAL CONFIGURATION TO SELECTED SCENE
+			case ACTION_SAVE_CONF: {
+				gSceneConfig?.members.forEach[configItem|
+					//logInfo("SCENE","Item Name = " + configItem.name)
+					sItemID	= configItem.name.replace(CONFIG_ITEM_PREFIX,'')
+					itemClassName = configItem.getClass().getName()
+					if (configItem.state.toString=="Uninitialized") {
+						//if (configItem instanceof SwitchItem) {
+						if (itemClassName.contains("SwitchItem")) {
+							configItem.sendCommand(OFF)
+						}
+						//else if (configItem instanceof DimmerItem){
+						else if (itemClassName.contains("DimmerItem")) {
+							configItem.sendCommand(0)
+						}
+						//else if (configItem instanceof ColorItem){
+						else if (itemClassName.contains("ColorItem")) {
+							configItem.sendCommand("0.0,0.0,0.0")
+						}
+					}
+					if (stempConfigStr!="") {
+						stempConfigStr = stempConfigStr + ITEM_SEPARATOR
+					}
+					stempConfigStr = stempConfigStr + sItemID + INFO_SEPARATOR + configItem.state.toString
+				]
+				sSceneItemName = SCENE_ITEM_BASE_NAME + CNF_SCENE_EditingSceneNum.state.toString
+				gScenes?.allMembers.filter(s | s.name.contains(sSceneItemName)).forEach[sceneItem|
+					sendCommand(sceneItem as StringItem, stempConfigStr)
+				]
+
+				// Update status
+				CNF_SCENE_Result.postUpdate("Scene Saved")
+				CNF_SCENE_ResultReset.sendCommand(ON)
+			}
+			//--------------------------------------------------------------------------
+			// SAVE ACTUAL LIGHTS STATUS TO SELECTED SCENE
+			case ACTION_SAVE_ACTUAL_STATUS: {
+				logInfo("SCENE","---> REQUIRED ACTION = [ACTION_SAVE_ACTUAL_STATUS]")
+				gLights?.members.forEach[lightItem|
+					// Check if lights belong to a room that we want to ignore
+				 	bIgnoreItem = false
+					gSceneRoomIgnore.members.filter(s|s.state==ON).forEach[roomItem|
+						if (lightItem.name.lowerCase.contains(roomItem.name.replace(ROOM_IGNORE_PREFIX,'').lowerCase)) {
+							bIgnoreItem = true
+						}
+					]
+					// If it's not to be ignored..
+					if (!bIgnoreItem) {
+						sItemID	= lightItem.name
+						itemClassName = lightItem.getClass().getName()
+						// check have valid state
+						if (lightItem.state.toString=="Uninitialized") {
+							//if (lightItem instanceof SwitchItem) {
+							if (itemClassName.contains("SwitchItem")) {
+								lightItem.sendCommand(OFF)
+							}
+							//else if (lightItem instanceof DimmerItem){
+							else if (itemClassName.contains("DimmerItem")) {
+								lightItem.sendCommand(0)
+							}
+							//else if (lightItem instanceof ColorItem){
+							else if (itemClassName.contains("ColorItem")) {
+								lightItem.sendCommand("0.0,0.0,0.0")
+							}
+						}
+						if (stempConfigStr!="") {
+							stempConfigStr = stempConfigStr + ITEM_SEPARATOR
+						}
+						stempConfigStr = stempConfigStr + sItemID + INFO_SEPARATOR + lightItem.state.toString
+					}
+				]
+				sSceneItemName = SCENE_ITEM_BASE_NAME + CNF_SCENE_EditingSceneNum.state.toString
+				gScenes?.allMembers.filter(s | s.name.contains(sSceneItemName)).forEach[sceneItem|
+					sendCommand(sceneItem as StringItem, stempConfigStr)
+				]
+
+				// Write on the configuration item status of each light just saved
+				var arrItems = stempConfigStr.split(ITEM_SEPARATOR)
+				for (i : arrItems) {
+					val itemConfString = i.split(INFO_SEPARATOR)
+					val configItemName = CONFIG_ITEM_PREFIX + itemConfString.get(0)
+					gSceneConfig?.allMembers.filter(s | s.name==configItemName).forEach[configItem|
+						configItem.sendCommand(itemConfString.get(1))
+					]
+				}
+
+				// Update status
+				CNF_SCENE_Result.postUpdate("Scene Saved")
+				CNF_SCENE_ResultReset.sendCommand(ON)
+			}
+			//--------------------------------------------------------------------------
+			// TEST SCENE
+			case ACTION_SCENE_TEST: {
+				if (CNF_SCENE_EditingSceneNum.state>0) {
+					CNF_SCENE_Result.postUpdate("Start Testing...")
+					// get config string from scene item
+					sSceneItemName = SCENE_ITEM_BASE_NAME + CNF_SCENE_EditingSceneNum.state.toString
+					gScenes?.allMembers.filter(s | s.name.contains(sSceneItemName)).forEach[sceneItem|
+		                sSceneConf = sceneItem.state.toString
+		            ]
+					logInfo("SCENE","Saved Scene Config:" + sSceneConf)
+					if (sSceneConf!="Uninitialized" && sSceneConf!="") {
+						var arrItems = sSceneConf.split(ITEM_SEPARATOR)
+						for (i : arrItems) {
+							val itemConf = i.split(INFO_SEPARATOR)
+							val itemName = itemConf.get(0)
+							gLights?.allMembers.filter(s | s.name==itemName).forEach[lightItem|
+									//logInfo("SCENE","|||--->Item (" + configItem.name + ")--command (" + itemConf.get(1) + ")----")
+									lightItem.sendCommand(itemConf.get(1))
+									//Thread::sleep(200)
+							]
+						}
+						sMsgToSay = "Ok!"
+						say(sMsgToSay)
+					} else {
+						logInfo("SCENE","ATTENZIONE: SCENE NOT CONFIGURED YET")
+						sMsgToSay = "Scenario " + CNF_SCENE_EditingSceneNum.state + "non ancora configurato"
+						say(sMsgToSay)
+					}
+				}
+				// Update status
+				CNF_SCENE_Result.postUpdate("Ok, scene Applied")
+				CNF_SCENE_ResultReset.sendCommand(ON)
+
+			}
+		}
+		CNF_SCENE_Action.postUpdate(0)
+		logInfo("SCENE","---> SCENE RULE COMPLETED <-----")
+		//lock.unlock()
+	/*
+	}
+	catch(e){
+		logInfo("SCENE","--->RULE ERROR" + e.toString)
+	}
+	finally{
+		//lock.unlock()
+	}
+	*/
+end
+
+
+
+rule "SCENE Selection Change"
+when
+	Item CNF_SCENE_EditingSceneNum changed
+then
+	sSceneConf = ""
+	//lock.lock()
+//	try {
+		logInfo("SCENE","---------------------------------------------------------------------------")
+		// Selected Scene Changed
+		if (CNF_SCENE_EditingSceneNum.state>0) {
+			// Selected Scene Changed, get config string from scene item
+			sSceneItemName = SCENE_ITEM_BASE_NAME + CNF_SCENE_EditingSceneNum.state.toString
+			gScenes?.allMembers.filter(s | s.name.contains(sSceneItemName)).forEach[sceneItem|
+                sSceneConf = sceneItem.state.toString
+            ]
+			logInfo("SCENE","Saved Scene Config:" + sSceneConf)
+			if (sSceneConf!="Uninitialized" && sSceneConf!="") {
+				var arrItems = sSceneConf.split(ITEM_SEPARATOR)
+				for (i : arrItems) {
+					val itemConf = i.split(INFO_SEPARATOR)
+					val configItemName = CONFIG_ITEM_PREFIX + itemConf.get(0)
+					gSceneConfig?.allMembers.filter(s | s.name==configItemName).forEach[configItem|
+							//logInfo("SCENE","|||--->Item (" + configItem.name + ")--command (" + itemConf.get(1) + ")----")
+							configItem.sendCommand(itemConf.get(1))
+					]
+				}
+			} else {
+				gSceneConfig?.members.forEach[configItem|
+					itemClassName = configItem.getClass().getName()
+					//if (configItem instanceof SwitchItem) {
+					if (itemClassName.contains("SwitchItem")) {
+						configItem.sendCommand(OFF)
+					}
+					//else if (configItem instanceof DimmerItem){
+					else if (itemClassName.contains("DimmerItem")) {
+						configItem.sendCommand(0)
+					}
+					//else if (configItem instanceof ColorItem){
+					else if (itemClassName.contains("ColorItem")) {
+						logInfo("SCENE","COLOR_ITEM--ItemNAME (" + configItem.name + ")")
+						if (configItem!=null) {
+							configItem.sendCommand("0.0,0.0,0.0")
+						}
+					}
+				]
+			}
+		}
+/*
+	}
+	catch(e){
+		logInfo("SCENE","--->RULE ERROR" + e.toString)
+	}
+	finally{
+		lock.unlock()
+	} */
+end
+
+
+
+
+rule "SCENE Edit Status Reset"
+when
+	Item CNF_SCENE_ResultReset received command ON
+then
+	if (timerResetStatus == null) {
+		timerResetStatus = createTimer(now.plusSeconds(5)) [|
+			CNF_SCENE_Result.postUpdate("-")
+			timerResetStatus = null
+		]
+	} else {
+		timerResetStatus.reschedule(now.plusSeconds(5))
+	}
+	CNF_SCENE_ResultReset.sendCommand(OFF)
+end
+
+
+
+rule "SCENE Edit Mode Activation Change"
+when
+	Item CNF_SCENE_EditMode received command
+then
+	if (CNF_SCENE_EditMode.state==OFF) {
+		CNF_SCENE_EditingSceneNum.sendCommand(0)
+	}
+end

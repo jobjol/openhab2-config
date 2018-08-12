@@ -1,0 +1,91 @@
+import org.openhab.core.persistence.*
+import org.eclipse.smarthome.core.library.types.DecimalType
+import org.eclipse.smarthome.model.script.actions.Timer
+import org.openhab.core.library.types.*
+import org.openhab.model.script.actions.*
+
+var Timer mDimmerTimer = null
+val int LightBedroom = 0
+val int LightOffice = 0
+val int Direction = 1
+
+rule "Slaapkamer Long press"
+when
+    Item Switch_hold_Bedroom changed to ON or Item Switch_hold_Bed changed to ON
+then
+logInfo('LOG', 'Slaapkamer dimmer pressed')
+LightBedroom = (Light_Bedroom__Proxy.state as DecimalType).intValue()
+Direction = 1
+    while (Switch_hold_Bedroom.state == ON || Switch_hold_Bed.state == ON) {
+      if((LightBedroom + 10) > 100) {
+                 Direction = 0
+                 Thread::sleep(500)
+             }
+             if ((LightBedroom - 10) < 0) {
+                 Direction = 1
+                 Thread::sleep(500)
+             }
+             if (Direction == 1) {
+                LightBedroom += 10
+             }
+             else {
+                LightBedroom -= 10
+             }
+             sendCommand(Light_Bedroom__Button, LightBedroom)
+             Thread::sleep(250)
+    }
+end
+
+rule "Overloop Long press"
+when
+    Item Switch_hold_Overloop changed to ON
+then
+logInfo('LOG', 'Overloop dimmer pressed')
+LightBedroom = (Light_Overloop_Plafond.state as DecimalType).intValue()
+Direction = 1
+    while ( Switch_hold_Overloop.state == ON) {
+      if((LightBedroom + 5) > 100) {
+                 Direction = 0
+                 Thread::sleep(500)
+       }
+       if ((LightBedroom - 5) < 0) {
+           Direction = 1
+           Thread::sleep(500)
+       }
+       if (Direction === 1) {
+          LightBedroom += 5
+       }
+       else {
+          LightBedroom -= 5
+       }
+       sendCommand(Light_Overloop_Plafond__Button, LightBedroom)
+       Thread::sleep(250)
+      }
+end
+
+rule "Office Long press"
+when
+    Item Switch_hold_Office changed to ON
+then
+logInfo('LOG', 'Office dimmer pressed')
+LightOffice = (Light_Werkkamer_Plafond__Proxy.state as DecimalType).intValue()
+Direction = 1
+    while ( Switch_hold_Office.state == ON) {
+      if((LightOffice + 5) > 100) {
+                 Direction = 0
+                 Thread::sleep(500)
+             }
+             if ((LightOffice - 5) < 0) {
+                 Direction = 1
+                 Thread::sleep(500)
+             }
+             if (LightOffice == 1) {
+                LightOffice += 5
+             }
+             else {
+                LightOffice -= 5
+             }
+             sendCommand(Light_Werkkamer_Plafond__Button, LightOffice)
+             Thread::sleep(250)
+    }
+end

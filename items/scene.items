@@ -1,0 +1,36 @@
+Group 		gSceneConfig
+Group 		gScenePersist
+
+Switch    CNF_SCENE_EditMode    "Edit Mode" (gScenePersist)
+
+// Number of Scene to Edit
+Number 		CNF_SCENE_EditingSceneNum	"[MAP(scenemap.map):%s]" (gScenePersist)
+// Light Configuration Items
+Switch 		CNF_SCENE_Room1_Light01		"Light 01"		 (gSceneConfig)
+Dimmer 		CNF_SCENE_Room2_Light02		"Light 02"		 (gSceneConfig)
+Switch 		CNF_SCENE_Room3_Light03   	"Light 03 RGB"   	 (gSceneConfig)
+Color 		CNF_SCENE_Room3_Light03Color   	"Light 03 Color"	 (gSceneConfig)
+Dimmer 		CNF_SCENE_Room3_Light03Dim	"Light 03 Intensity"	 (gSceneConfig)
+Dimmer 		CNF_SCENE_Room3_Light03Temp  	"Light 03 Color Temp"	 (gSceneConfig)
+
+// Items for managing actions
+Number 		CNF_SCENE_Action
+String 		CNF_SCENE_Result		"[%s]"	<graph11>
+Switch		CNF_SCENE_ResultReset
+
+// items that will store scene configuration
+Group 		gScenes
+String 		CNF_SCENE_Scene1	(gScenes, gScenePersist)
+String 		CNF_SCENE_Scene2	(gScenes, gScenePersist)
+String 		CNF_SCENE_Scene3	(gScenes, gScenePersist)
+String 		CNF_SCENE_Scene4	(gScenes, gScenePersist)
+String 		CNF_SCENE_Scene5	(gScenes, gScenePersist)
+
+// If ON all the relative room lights are ignored during scene configuration contruction
+// (So, when you will apply the scene no status of that room lights will be changed )
+Group gSceneRoomIgnore
+Switch 		CNF_SCENE_Ignore_ROOM1		"Ignore ROOM 1"	<impostazione> 	(gSceneRoomIgnore)
+Switch 		CNF_SCENE_Ignore_ROOM2		"Ignore ROOM 2"	<impostazione>	(gSceneRoomIgnore)
+Switch 		CNF_SCENE_Ignore_ROOM3		"Ignore ROOM 3"	<impostazione>	(gSceneRoomIgnore)
+
+Switch 		CNF_SCENE_VoiceConfirm		"Vocal Confirm"

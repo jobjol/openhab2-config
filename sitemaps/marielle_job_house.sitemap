@@ -1,0 +1,201 @@
+sitemap marielle_job_house label="M&J home control" {
+    Frame label="Benedenverdieping" icon="groundfloor" {
+      Slider item=Light_BG_Dimmer label="Master dimmer [%.1f]"
+       Switch item=Light_BG_Dimmer label="Master switch [%.1f]"
+       Colorpicker item=Light_BG_Color label="Master Kleur" icon="colorwheel"
+      Slider item=Light_Living_Room_Towers__UI label="Zuilen"
+      Slider item=Light_Living_Room__UI label="Woonkamer"
+
+      Slider item=Light_Kitchen_Table_Light__UI label="Keukentafel"
+      Slider item=Light_Kitchen label="Keuken"
+      Default item=Light_Kitchen_Switch label="Keuken switch"
+      Slider item=Light_Hallway__UI label="Hal"
+      Slider item=Light_Hal_Achter__UI label="Hal achter"
+      Default item=Light_Toilet label="Toilet"
+      Default item=Light_Schuur__UI label="Schuur"
+      Slider item=Light_Garden__UI label="Tuinlamp"
+      Slider item=Light_Garden_2__UI label="Tuinlamp 2"
+      Default item=Light_Frontdoor_1__UI label="Voordeur 1"
+      Default item=Light_Frontdoor_2__UI label="Voordeur 2"
+
+Text label="Woonkamer" {
+              Colorpicker item=Light_Living_Room_Color__UI label="Kleur" icon="colorwheel"
+              Slider item=Light_Living_Room_Color_Temp__UI label="kleurtemperatuur" icon="temperature"
+
+            }
+      Text label="Keuken" {
+
+            Colorpicker item=Light_Kitchen_Table_Light_color__UI label="Kleur" icon="colorwheel"
+            Slider item=Light_Kitchen_Table_Light_color_temp__UI label="kleurtemperatuur" icon="temperature"
+          }
+      Text label="Hal" {
+
+        Colorpicker item=Light_Hallway_color__UI label="Kleur" icon="colorwheel"
+        Slider item=Light_Hallway_color_temp__UI label="kleurtemperatuur" icon="temperature"
+      }
+      Text label="Toilet" {
+
+              Default item=Light_Toilet_Switch label="Schakelaar"
+              Default item=Light_Toilet_Watt label="Energie (Watt)"
+              Default item=Light_Toilet_Kwh label="Verbruik (kWh)"
+            }
+      Text label="Hal achter" {
+
+        Colorpicker item=Light_Hal_Achter_Color__UI label="Kleur" icon="colorwheel"
+        Slider item=Light_Hal_Achter_Color_Temp__UI label="kleurtemperatuur" icon="temperature"
+      }
+      Text label="Tuin" {
+        Default item=Light_Shed_Garden label="Schuur tuin"
+        Colorpicker item=Light_Garden_color__UI label="Tuin 1" icon="colorwheel"
+        Slider item=Light_Garden_color_temp__UI label="Tuin wit"
+        Colorpicker item=Light_Garden_2_color__UI label="Tuin 2" icon="colorwheel"
+        Slider item=Light_Garden_2_color_temp__UI label="Tuin wit 2"
+        Colorpicker item=Light_Frontdoor_1_color__UI label="Voordeur 1" icon="colorwheel"
+        Slider item=Light_Frontdoor_1__UI label="Voordeur 1 wit"
+        Colorpicker item=Light_Frontdoor_2_color__UI label="Voordeur 2" icon="colorwheel"
+        Slider item=Light_Frontdoor_2__UI label="Voordeur 2 wit"
+        Slider item=Light_Front_Garden_Left__UI label="Voortuin links voor"
+        Slider item=Light_Front_Garden_Right__UI label="Voortuin rechts voor"
+
+        Frame label="------- Night scene ------" icon="night" {
+          Colorpicker item=Light_Garden_color__Scene label="Tuin" icon="colorwheel"
+          Slider item=Light_Garden__Scene label="Tuinverlichting"
+          Colorpicker item=Light_Frontdoor_1_color__Scene label="Voordeur 1" icon="colorwheel"
+          Slider item=Light_Frontdoor_1__Scene label="Voordeur 1"
+          Colorpicker item=Light_Frontdoor_2_color__Scene label="Voordeur 2" icon="colorwheel"
+          Slider item=Light_Frontdoor_2__Scene label="Voordeur 2"
+          Slider item=Light_Front_Garden_Left__Scene label="Voortuin links voor"
+          Slider item=Light_Front_Garden_Right__Scene label="Voortuin rechts voor"
+          Slider item=Light_Shed_Garden__Scene label="Buitenverlichting schuur"
+        }
+      }
+
+    }
+
+  Frame label="First Floor" icon="firstfloor" {
+    Default item=Bed_Marielle_Hoofd label="Bed hoofd Marielle"
+    Default item=Bed_Marielle_Voet label="Bed voet Marielle"
+    Default item=Bed_Job_Hoofd label="Bed hoofd Job"
+    Default item=Bed_Job_Voet label="Bed voet Job"
+    Slider item=Light_FF_Dimmer label="Master dimmer"
+    Switch item=Light_FF_Dimmer label="Master switch"
+    Slider item=Light_Overloop_Plafond__UI label="Overloop"
+    Slider item=Light_Bedroom__UI label="Master bedroom"
+    Slider item=Light_Werkkamer_Plafond__UI label="Werkkamer"
+    Text label="Overloop" {
+          Slider item=Light_Overloop_Plafond__UI label="Intensiteit"
+          Colorpicker item=Light_Overloop_Plafond_color__UI label="Kleur" icon="colorwheel"
+          Slider item=Light_Overloop_Plafond_color_temp__UI label="kleurtemperatuur" icon="temperature"
+        }
+    Text label="Master bedroom" {
+          Colorpicker item=Light_Bedroom_Color__UI label="Kleur" icon="colorwheel"
+          Slider item=Light_Bedroom_Color_Temp__UI label="kleurtemperatuur" icon="temperature"
+        }
+    Text label="Werkkamer" {
+      Slider item=Light_Werkkamer_Plafond__UI label="Intensiteit"
+      Colorpicker item=Light_Werkkamer_Plafond_color__UI label="Kleur" icon="colorwheel"
+      Slider item=Light_Werkkamer_Plafond_color_temp__UI label="kleurtemperatuur" icon="temperature"
+    }
+  }
+  Frame label="Alarm clock" {
+         Setpoint item=WakeUpHour minValue=0 maxValue=23 step=1
+         Setpoint item=WakeUpMinute minValue=0 maxValue=59 step=1
+         Slider item=WakeUpFadeTime label="Sunrise minutes"
+         Switch item=WakeUpAlarmSwitch
+        Switch item=WakeUpMusic
+        Switch item=WakeUpMusicFade
+        Setpoint item=WakeUpMusicVolume label="Wakeup music volume" minValue=0 maxValue=23 step=1
+         Switch item=WakeUpAlarmTriggered
+  }
+  Frame label="Sonos master bedroom" {
+        Default item=Sonos_Controller
+        Slider  item=Sonos_Volume
+        Switch  item=Sonos_Mute
+        Switch  item=Sonos_LED
+        Text    item=Sonos_CurrentTrack
+        Text    item=Sonos_State
+  }
+  Frame label="Sonos badkamer" {
+          Default item=Sonos_2_Controller
+          Slider  item=Sonos_2_Volume
+          Switch  item=Sonos_2_Mute
+          Switch  item=Sonos_2_LED
+          Text    item=Sonos_2_CurrentTrack
+          Text    item=Sonos_2_State
+          Default item=Sonos_2_Huminity
+          Default item=Sonos_2_Huminity_GrooveSalad
+          Default item=Sonos_2_Huminity_MaxVol
+    }
+  Frame label="Sensors" {
+          Group item=Sensors
+          Group item=Motion
+          Group item=Illumination
+          Text label="Energy" icon="power" {
+              Default item=dsmr_power label="Actual power delivery"
+              Group item=Energy
+              Switch item=chart_dsmr_delivery_period label="Tijdsbestek" mappings=[0="Dag", 1="Week", 2="Maand", 3="Jaar", 4="Uur"]
+              Chart item=dsmr_power period=D refresh=3000 label="power" visibility=[chart_dsmr_delivery_period==0, chart_dsmr_delivery_period=="Uninitialized"]
+              Chart item=dsmr_power period=W refresh=3000 label="power" visibility=[chart_dsmr_delivery_period==1]
+              Chart item=dsmr_power period=M refresh=3000 label="power" visibility=[chart_dsmr_delivery_period==2]
+              Chart item=dsmr_power period=Y refresh=3000 label="power" visibility=[chart_dsmr_delivery_period==3]
+              Chart item=dsmr_power period=h refresh=3000 label="power" visibility=[chart_dsmr_delivery_period==4]
+              Switch item=chart_meter label="Tijdsbestek" mappings=[0="Dag", 1="Week", 2="Maand", 3="Jaar", 4="Uur"]
+              Chart item=dsmr_eDeliveryTariff2 period=D refresh=3000 label="power" visibility=[chart_meter==0, chart_meter=="Uninitialized"]
+              Chart item=dsmr_eDeliveryTariff2 period=W refresh=3000 label="power" visibility=[chart_meter==1]
+              Chart item=dsmr_eDeliveryTariff2 period=M refresh=3000 label="power" visibility=[chart_meter==2]
+              Chart item=dsmr_eDeliveryTariff2 period=Y refresh=3000 label="power" visibility=[chart_meter==3]
+              Chart item=dsmr_eDeliveryTariff2 period=h refresh=3000 label="power" visibility=[chart_meter==4]
+              Switch item=chart_gas_meter label="Tijdsbestek" mappings=[0="Dag", 1="Week", 2="Maand", 3="Jaar", 4="Uur"]
+              Chart item=dsmr_gas_hourly period=D refresh=3000 label="power" visibility=[chart_gas_meter==0, chart_meter=="chart_gas_meter"]
+              Chart item=dsmr_gas_hourly period=W refresh=3000 label="power" visibility=[chart_gas_meter==1]
+              Chart item=dsmr_gas_hourly period=M refresh=3000 label="power" visibility=[chart_gas_meter==2]
+              Chart item=dsmr_gas_hourly period=Y refresh=3000 label="power" visibility=[chart_gas_meter==3]
+              Chart item=dsmr_gas_hourly period=h refresh=3000 label="power" visibility=[chart_gas_meter==4]
+          }
+          Text label="Deurbel" icon="frontdoor" {
+            Default item=Deurbel_1
+            Default item=Deurbel_3 label="Deurbel is ringing"
+            Default item=Deurbel_Enable label="Deurbel aan/uit"
+            Default item=Deurbel_Sonos label="Sonos notificatie"
+            Setpoint item=Deurbel_Duur minValue=0 maxValue=60 step=1
+            Setpoint item=Deurbel_Flood_protection minValue=0 maxValue=30 step=1
+            Default item=Deurbel_Count_3mins
+            Default item=Deurbel_Count
+            Default item=Brievenbus_Sonos label="Brievenbus Sonos notificatie"
+
+            Image label="test" icon="camera" url="http://home.jobjol.com/static/camera/frontdoor.jpg" refresh=60000
+
+            Switch item=chart_deurbel_period label="Tijdsbestek" mappings=[0="Dag", 1="Week", 2="Maand", 3="Jaar"]
+                  Chart item=Deurbel_1 period=D refresh=3000 label="bathroom temperature" visibility=[chart_deurbel_period==0, chart_bathroom_period=="chart_deurbel_period"]
+                  Chart item=Deurbel_1 period=W refresh=3000 label="bathroom temperature" visibility=[chart_deurbel_period==1]
+                  Chart item=Deurbel_1 period=M refresh=3000 label="bathroom temperature" visibility=[chart_deurbel_period==2]
+                  Chart item=Deurbel_1 period=Y refresh=3000 label="bathroom temperature" visibility=[chart_deurbel_period==3]
+            }
+          Default item=Door_Front icon="door"
+          Default item=Brievenbus icon="window"
+          Group item=Battery
+  }
+
+
+
+    Frame label="Graphs" {
+      Switch item=chart_bathroom_period label="Tijdsbestek" mappings=[0="Dag", 1="Week", 2="Maand", 3="Jaar"]
+      Chart item=Sensors period=D refresh=3000 label="bathroom temperature" visibility=[chart_bathroom_period==0, chart_bathroom_period=="Uninitialized"]
+      Chart item=Sensors period=W refresh=3000 label="bathroom temperature" visibility=[chart_bathroom_period==1]
+      Chart item=Sensors period=M refresh=3000 label="bathroom temperature" visibility=[chart_bathroom_period==2]
+      Chart item=Sensors period=Y refresh=3000 label="bathroom temperature" visibility=[chart_bathroom_period==3]
+      Switch item=chart_battery_period label="Tijdsbestek" mappings=[0="Dag", 1="Week", 2="Maand", 3="Jaar"]
+      Chart item=Battery period=D refresh=3000 label="bathroom temperature" visibility=[chart_battery_period==0, chart_battery_period=="Uninitialized"]
+      Chart item=Battery period=W refresh=3000 label="bathroom temperature" visibility=[chart_battery_period==1]
+      Chart item=Battery period=M refresh=3000 label="bathroom temperature" visibility=[chart_battery_period==2]
+      Chart item=Battery period=Y refresh=3000 label="bathroom temperature" visibility=[chart_battery_period==3]
+      Switch item=chart_illumination_period label="Tijdsbestek" mappings=[0="Dag", 1="Week", 2="Maand", 3="Jaar"]
+      Chart item=Illumination period=D refresh=3000 label="bathroom temperature" visibility=[chart_illumination_period==0, chart_illumination_period=="Uninitialized"]
+      Chart item=Illumination period=W refresh=3000 label="bathroom temperature" visibility=[chart_illumination_period==1]
+      Chart item=Illumination period=M refresh=3000 label="bathroom temperature" visibility=[chart_illumination_period==2]
+      Chart item=Illumination period=Y refresh=3000 label="bathroom temperature" visibility=[chart_illumination_period==3]
+       Default item=Debug
+       Default item=Switch_Night_Mode label="Nacht mode"
+    }
+
+}

@@ -1,0 +1,151 @@
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.openhab.core.library.types.*
+import java.awt.Color
+
+var hue = new DecimalType(10)
+	    var sat = new DecimalType(10)
+	    var bri = new DecimalType(10)
+	    var HSBType color
+
+rule "Voice control"
+when
+	Item VoiceCommand received command
+then
+			var String command = VoiceCommand.state.toString.toLowerCase
+			//var String command = "ligt woonkamer rood"
+	logInfo("Voice.Rec","VoiceCommand received "+command)
+  var String newState = null
+	// find new state, toggle otherwise (if possible)
+	if (command.contains("graad") || command.contains("procent") || command.contains("dim") ||  command.contains("%")) {
+		// extract new state (find the digits in the string)
+		var java.util.regex.Pattern p = java.util.regex.Pattern::compile(".* ([0-9]+).*")
+		var Matcher m = p.matcher(command)
+		if (m.matches()) {
+			newState = new StringType(m.group(1).trim()).toString
+		}
+	}
+	else if (command.contains("uit")|| command.contains("uitschakelen") || command.contains("beenden")) {
+		newState = "OFF"
+		logInfo("Voice.Rec","testtt")
+	} else if (command.contains("aan") || command.contains("een")|| command.contains("inschakelen") || command.contains("starten")) {
+		newState = "ON"
+	} else if (command.contains("minder") || command.contains("lager") || command.contains("zakken") || command.contains("sluiten")) {
+		newState = "DECREASE"
+	} else if (command.contains("meer") || command.contains("hoger") || command.contains("open") || command.contains("openen")) {
+		newState = "INCREASE"
+	} else if (command.contains("rood")) {
+
+        newState = "55,80,50"
+	} else if (command.contains("blauw")) {
+		newState = new HSBType(new Color(0, 0, 255));
+	} else if (command.contains("wit")) {
+		logInfo("Voice.Rec","testtt6")
+		newState = new HSBType(new Color(255, 255, 255));
+	}
+//logInfo("Voice.Rec",newState)
+	// find room
+	var String room = null
+	var String roomItemPart = null
+	var String roomArticle="in"
+	if (command.contains("woonkamer")) {
+		room = "Woonkamer"
+		roomItemPart = "GF_Living"
+		if (command.contains("zuilen")) {
+      room = "Woonkamer"
+      roomItemPart = "Living_Room_Towers"
+    }
+    if (command.contains("plafond")) {
+      room = "Woonkamer"
+      roomItemPart = "Living_Room"
+    }
+	} else if (command.contains("benedenverdieping") || command.contains("beneden")) {
+    room = "Benedenverdieping"
+    roomItemPart = "BG_Dimmer"
+  }
+  else if (command.contains("bovenverdieping") || command.contains("bovenverdieping")) {
+    room = "Bovenverdieping"
+    roomItemPart = "FF_Dimmer"
+  }
+  else if (command.contains("zuilen")) {
+    room = "Woonkamer"
+    roomItemPart = "Living_Room_Towers"
+	} else if (command.contains("slaapkamer")) {
+		room = "Slaapkamer"
+		roomItemPart = "FF_Bedroom"
+	} else if (command.contains("toilet") || command.contains("wc")) {
+		room = "Toilet"
+		roomItemPart = "GF_Toilet"
+	} else if (command.contains("werkkamer") || command.contains("kantoor")) {
+		room = "Werkkamer"
+		roomItemPart = "FF_Office"
+		logInfo("Voice.Rec","room is werkkamer")
+	} else if (command.contains("keuken")) {
+		room = "Keuken"
+		roomItemPart = "GF_Kitchen"
+		if (command.contains("tafel") || command.contains("eettafel")) {
+          room = "Woonkamer"
+          roomItemPart = "Kitchen_Table_Light"
+    }
+	} else if (command.contains("tuin")) {
+    room = "Tuin"
+    roomItemPart = "GF_Garden"
+  } else if (command.contains("hal") || command.contains("halletje")) {
+    room = "Hal"
+    roomItemPart = "GF_Hallway"
+  } else if (command.contains("wasmachine") || command.contains("hal achter")) {
+    room = "Hal achter"
+    roomItemPart = "GF_RearEntry"
+  } else if (command.contains("overloop")) {
+    room = "Overloop"
+    roomItemPart = "FF_Overloop"
+  }
+	// purpose
+	var String itemType=null
+	var String itemSubType=""
+	var String reply=""
+	if (command.contains("licht") || command.contains("ligt") || command.contains("lichten") || command.contains("lampen") || command.contains("lamp")) {
+		itemType = "Light"
+		logInfo("Voice.Rec","type item is licht")
+		if (newState instanceof HSBType) {
+		    itemSubType = "_Color"
+		    logInfo("Voice.Rec", itemSubType)
+		}
+	}
+//	else if (command.contains("rolladen") || command.contains("jalousien")) {
+//		itemType = "Shutter"
+//		if (newState instanceof StringType) {
+//			itemType = "Shutter_Pos"
+//		}
+//		if (room=="Woonkamer") {
+//			// Unterscheiden zwischen Tür/Fenster
+//			if (command.contains("deur")) {
+//				itemSubType = "_Door"
+//			} else if (command.contains("raam")) {
+//				itemSubType = "_Window"
+//			}
+//		}
+//	} else if (command.contains("temperatuur")) {
+//		itemType = "Temperature"
+//		itemSubType = "_Target"
+//		reply = "Ok, Temperatuur "+roomArticle+" "+room+" auf "+newState+" Grad gesetzt"
+//	}
+
+		logInfo("Voice.Rec", "sending "+newState+" to "+itemType+"_"+roomItemPart+itemSubType)
+		if (command.contains("alle")) {
+			if (roomItemPart==null)
+				roomItemPart=""
+			val String itemName = itemType+"_"+roomItemPart+itemSubType
+			val State finalState = newState
+			logInfo("Voice.Rec","searching for  *"+itemName+"* items")
+			All?.allMembers.filter(s | s.name.contains(itemName) && s.acceptedDataTypes.contains(finalState.class)).forEach[item|
+				logInfo("Voice.Rec","item  "+item+" found")
+				sendCommand(item,finalState.toString)
+			]
+		} else {
+			sendCommand(itemType+"_"+roomItemPart+itemSubType,newState)
+		}
+		if (reply!="")
+			say(reply)
+
+end

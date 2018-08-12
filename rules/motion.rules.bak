@@ -1,0 +1,173 @@
+// Imports
+import org.openhab.core.library.types.*
+import org.openhab.core.persistence.*
+import org.openhab.model.script.actions.*
+import org.joda.time.*
+
+val String LOG = "Motion"
+
+rule "Motion trap boven ON"
+when
+    Item Motion_Trap_Boven changed to ON
+then
+    logInfo(LOG, 'Detected at trap boven ')
+    if (Light_Overloop_Plafond.state == 0 && Illumination_Trap_Boven.state < 150) {
+
+        if (Switch_Night_Mode.state == OFF) {
+          sendCommand(Light_Overloop_Plafond__Motion, 100)
+        }
+        else {
+          sendCommand(Light_Overloop_Plafond__Motion, 1)
+        }
+    }
+end
+
+
+
+rule "Motion trap boven OFF"
+when
+    Item Motion_Trap_Boven changed to OFF
+then
+    logInfo(LOG, 'Off at trap boven ')
+    if (Motion_Trap_Boven.state == OFF) {
+      if (Light_Overloop_Plafond__Setby.state == 'Motion') {
+        sendCommand(Light_Overloop_Plafond__Motion, 0)
+
+      }
+    }
+end
+
+
+
+rule "Motion trap beneden ON"
+when
+    Item Motion_Trap_Boven changed to ON
+then
+    logInfo(LOG, 'Detected at trap beneden ')
+    if (Light_Overloop_Plafond.state == 0 && Illumination_Trap_Boven.state < 150) {
+      if (Switch_Night_Mode.state == OFF) {
+                sendCommand(Light_Overloop_Plafond__Motion, 50)
+              }
+              else {
+                sendCommand(Light_Overloop_Plafond__Motion, 1)
+              }
+    }
+    if (Light_Hallway.state == 0 && Illumination_Hal.state < 150) {
+      if (Switch_Night_Mode.state == OFF) {
+        sendCommand(Light_Hallway__Motion, 50)
+      }
+      else {
+        sendCommand(Light_Hallway__Motion, 1)
+      }
+    }
+end
+
+rule "Motion trap beneden OFF"
+when
+    Item Motion_Trap_Boven changed to OFF
+then
+    logInfo(LOG, 'Off at trap beneden ')
+      if (Motion_Trap_Boven.state == OFF) {
+       if (Light_Overloop_Plafond__Setby.state == "Motion") {
+        sendCommand(Light_Overloop_Plafond__Motion, 0)
+        }
+      }
+      if (Motion_Hal.state == OFF) {
+         if (Light_Hallway__Setby.state == "Motion") {
+            sendCommand(Light_Hallway__Motion, 0)
+        }
+      }
+end
+
+rule "Motion hal beneden ON"
+when
+    Item Motion_Hal changed to ON
+then
+    logInfo(LOG, 'Motion detected at trap beneden ')
+    if (Light_Hallway.state == 0 && Illumination_Hal.state < 150) {
+      if (Switch_Night_Mode.state == OFF) {
+        sendCommand(Light_Hallway__Motion, 100)
+      }
+      else {
+        sendCommand(Light_Hallway__Motion, 1)
+      }
+    }
+end
+
+rule "Motion hal beneden OFF"
+when
+    Item Motion_Hal changed to OFF
+then
+    logInfo(LOG, 'Off at trap beneden ')
+    if (Motion_Trap_Boven.state == OFF) {
+      if (Light_Hallway__Setby.state == "Motion") {
+      sendCommand(Light_Hallway__Motion, 0)
+      }
+    }
+end
+
+rule "Motion keuken ON"
+when
+    Item Motion_Keuken changed to ON
+then
+    logInfo(LOG, 'Motion detected at keuken')
+    if (Light_Kitchen_Table_Light.state == 0 && Illumination_Keuken.state < 180) {
+      sendCommand(Light_Kitchen_Table_Light__Motion, 30)
+    }
+    if (Light_Kitchen.state == 0 && Illumination_Keuken.state < 180) {
+          sendCommand(Light_Kitchen__Motion, 100)
+        }
+end
+
+rule "Motion keuken OFF"
+when
+    Item Motion_Keuken changed to OFF
+then
+    logInfo(LOG, 'No Motion detected at keuken ')
+    if (Light_Kitchen_Table_Light.state == 30) {
+      sendCommand(Light_Kitchen_Table_Light__Motion, 0)
+    }
+    if (Light_Kitchen.state == 100) {
+              sendCommand(Light_Kitchen__Motion, 0)
+            }
+end
+
+rule "Motion woonkamer ON"
+when
+    Item Motion_Huiskamer changed to ON
+then
+    logInfo(LOG, 'Motion detected at woonkamer')
+    if (Light_Living_Room_Towers__Proxy.state == 0 && Illumination_Woonkamer.state < 180) {
+      sendCommand(Light_Living_Room_Towers__Motion, 40)
+    }
+end
+
+rule "Motion woonkamer OFF"
+when
+    Item Motion_Huiskamer changed to OFF
+then
+    logInfo(LOG, 'No Motion detected at woonkamer ' )
+    if (Light_Living_Room_Towers__Proxy.state == 40) {
+      sendCommand(Light_Living_Room_Towers__Motion, 0)
+    }
+end
+
+//rule "Tuinverlichting"
+//when
+//    Time cron "0 * * * * ?"
+//then
+//    if (vTimeOfDay.state == "EVENING" || vTimeOfDay.state == "NIGHT") {
+//      val motion_huiskamer = new DateTime((Motion_LastMotion_3.state as DateTimeType).getZonedDateTime.toInstant.toEpochMilli)
+//      val no_activity =  (now.millis - motion_huiskamer.millis) / 1000
+//      val intensity = (3600 - no_activity) / 36
+//      if (intensity >= 0) {
+//        sendCommand(Light_Garden__Motion, intensity)
+//      }
+//    }
+//    else {
+//      if (Light_Garden__Motion.state != 0) {
+//        sendCommand(Light_Garden__Motion, 0)
+//      }
+//    }
+//end
+

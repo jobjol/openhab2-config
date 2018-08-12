@@ -1,0 +1,77 @@
+import org.openhab.core.persistence.*
+import org.eclipse.smarthome.core.library.types.DecimalType
+import org.eclipse.smarthome.model.script.actions.Timer
+import org.openhab.core.library.types.*
+import org.openhab.model.script.actions.*
+
+val int deurbelFloodProtection = 0
+val int DeurbelCount = 0
+val int Total_count = 0
+val int deurbelDuur = 0
+var Timer mBellTimer = null
+var Timer mBellcountTimer = null
+var Timer mBellhallTimer = null
+
+
+rule "Door Bell pressed"
+when
+    Item Deurbel_1 changed to ON
+then
+    deurbelDuur = (Deurbel_Duur.state as DecimalType).intValue()
+    if (Deurbel_Flood_protection.state !== NULL) {
+      deurbelFloodProtection = (Deurbel_Flood_protection.state as DecimalType).intValue()
+    }
+    else {
+     deurbelFloodProtection = 0
+    }
+    if (Deurbel_Count_3mins.state == NULL) {
+      DeurbelCount = 0;
+    }
+    else {
+      DeurbelCount = (Deurbel_Count_3mins.state as DecimalType).intValue()
+    }
+
+
+    if (Deurbel_Count.state != NULL) {
+          Total_count = (Deurbel_Count.state as DecimalType).intValue()
+        }
+
+
+    Deurbel_Count_3mins.postUpdate(DeurbelCount + 1)
+    if (DeurbelCount == 0) {
+      Deurbel_Count.postUpdate(Total_count + 1)
+    }
+
+    if ((deurbelFloodProtection > 0) && ((DeurbelCount - 1) > deurbelFloodProtection)) {
+    logInfo("Doorbell", "Doorbell flood protection enabled")
+      return;
+    }
+
+    mBellcountTimer = createTimer(now.plusMinutes(3), [|
+                                                sendCommand(Deurbel_Count_3mins, 0)
+                                                ])
+
+    if (Deurbel_Enable.state == ON) {
+        sendCommand(Deurbel_3, ON)
+        if (deurbelDuur > 0) {
+          mBellTimer = createTimer(now.plusSeconds(deurbelDuur), [|
+                                    logInfo("Doorbell", "Doorbell duration limit reached")
+                                    sendCommand(Deurbel_3, OFF)
+                                    sendCommand(Deurbel_1, OFF)
+                                    ])
+        }
+    }
+    sendCommand(Light_Hallway__Rules, 100)
+    mBellhallTimer = createTimer(now.plusMinutes(5), [|
+                                        logInfo("Doorbell", "Hallway doorbell lights off")
+                                        sendCommand(Light_Hallway, 0)
+                                        ])
+end
+
+rule "Door Bell released"
+when
+    Item Deurbel_1 changed to OFF
+then
+    sendCommand(Deurbel_3, OFF)
+end
+

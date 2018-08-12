@@ -1,0 +1,11 @@
+rule "Set RGBW Value of Downstairs"
+ when
+   Item BedRoomColorGroup received update
+ then
+   var color_value = BedRoomColorGroup.state as HSBType
+   sendCommand(FF_Bed,color_value)
+   sendCommand(Color_FF_Bed_Torch,color_value)
+   sendCommand(Color_FF_Bed_Paul,color_value)
+   sendCommand(Color_FF_Bed_Sue,color_value)
+
+end

@@ -1,0 +1,64 @@
+sitemap motion_scene label="Motion Setup"
+{
+    Frame label="Motion timeout" icon="clock" {
+          Setpoint item=Duration_Motion_Werkkamer_Plafond__Scene_Motion label="Werkkamer [%d minutes]" minValue=1 maxValue=1000
+          Setpoint item=Duration_Motion_Overloop_Plafond__Scene_Motion label="Overloop [%d minutes]" minValue=1 maxValue=1000
+          Setpoint item=Duration_Motion_Shed_Garden__Scene_Motion label="Schuur tuinverlichting [%d minutes]" minValue=1 maxValue=1000
+          Setpoint item=Duration_Motion_Shed__Scene_Motion label="Schuur [%d minutes]" minValue=1 maxValue=1000
+          Setpoint item=Duration_Motion_Garden__Scene_Motion label="Tuinverlichting [%d minutes]" minValue=1 maxValue=1000
+          Setpoint item=Duration_Motion_Frontdoor_1__Scene_Motion label="Voordeur [%d minutes]" minValue=1 maxValue=1000
+          Setpoint item=Duration_Motion_Front_Garden_Left__Scene_Motion label="Voortuin [%d minutes]" minValue=1 maxValue=1000
+          Setpoint item=Duration_Motion_Hallway__Scene_Motion label="Entree [%d minutes]" minValue=1 maxValue=1000
+          Setpoint item=Duration_Motion_Kitchen_Table_Light__Scene_Motion label="Keukentafel [%d minutes]" minValue=1 maxValue=1000
+          Setpoint item=Duration_Motion_Kitchen__Scene_Motion label="Keuken [%d minutes]" minValue=1 maxValue=1000
+          Setpoint item=Duration_Motion_Living_Room_Towers__Scene_Motion label="Woonkamer zuilen [%d minutes]" minValue=1 maxValue=1000
+          Setpoint item=Duration_Motion_Bedroom_Color_Temp__Scene_Motion label="Slaapkamer [%d minutes]" minValue=1 maxValue=1000
+          Setpoint item=Duration_Motion_Living_Room__Scene_Motion label="Woonkamer [%d minutes]" minValue=1 maxValue=1000
+          Setpoint item=Duration_Motion_Hal_Achter__Scene_Motion label="Hal achter [%d minutes]" minValue=1 maxValue=1000
+          Setpoint item=Duration_Motion_Toilet__Scene_Motion label="Toilet [%d minutes]" minValue=1 maxValue=1000
+    }
+
+    Frame label="Motion max. environment light" icon="sun" {
+          Setpoint item=Illumination_Motion_Werkkamer_Plafond__Scene_Motion label="Werkkamer [%d Lumen]" minValue=1 maxValue=1000
+          Default item=Illumination_Office
+          Setpoint item=Illumination_Motion_Overloop_Plafond__Scene_Motion label="Overloop [%d Lumen]" minValue=1 maxValue=1000
+          Default item=Illumination_Trap_Beneden
+          Setpoint item=Illumination_Motion_Shed__Scene_Motion label="Schuur [%d Lumen]" minValue=1 maxValue=1000
+          Default item=Illumination_Schuur
+          Setpoint item=Illumination_Motion_Hallway__Scene_Motion label="Hal [%d Lumen]" minValue=1 maxValue=1000
+          Default item=Illumination_Hal
+          Setpoint item=Illumination_Motion_Kitchen_Table_Light__Scene_Motion label="Keukentafel [%d Lumen]" minValue=1 maxValue=1000
+          Default item=Illumination_Keuken
+          Setpoint item=Illumination_Motion_Kitchen__Scene_Motion label="Keuken [%d Lumen]" minValue=1 maxValue=1000
+          Default item=Illumination_Aanrecht
+          Setpoint item=Illumination_Motion_Living_Room_Towers__Scene_Motion label="Woonkamer towers [%d Lumen]" minValue=1 maxValue=1000
+          Default item=Illumination_Huiskamer
+          Setpoint item=Illumination_Motion_Bedroom_Color_Temp__Scene_Motion label="Slaapkamer [%d Lumen]" minValue=1 maxValue=1000
+          Default item=Illumination_Bedroom
+          Setpoint item=Illumination_Motion_Living_Room__Scene_Motion label="Woonkamer [%d Lumen]" minValue=1 maxValue=1000
+          Default item=Illumination_Huiskamer
+          Setpoint item=Illumination_Motion_Hal_Achter__Scene_Motion label="Hal achter [%d Lumen]" minValue=1 maxValue=1000
+          Default item=Illumination_Hal_Achter
+          Setpoint item=Illumination_Motion_Toilet__Scene_Motion label="Toilet [%d Lumen]" minValue=1 maxValue=1000
+          Default item=Illumination_Toilet
+    }
+
+    Group item=Setup_Werkkamer_Plafond label="Werkkamer"
+    Group item=Setup_Overloop_Plafond label="Overloop"
+    Group item=Setup_Shed_Garden label="Schuur tuinverlichting"
+    Group item=Setup_Shed label="Schuur"
+    Group item=Setup_Garden label="Tuinverlichting"
+    Group item=Setup_Frontdoor label="Voordeur"
+    Group item=Setup_Front_Garden label="Voortuin"
+    Group item=Setup_Hallway label="Entree"
+    Group item=Setup_Kitchen_Table label="Keukentafel"
+    Group item=Setup_Kitchen label="Keuken"
+    Group item=Setup_Living_Room_Towers label="Woonkamer zuilen"
+    Group item=Setup_Bedroom label="Slaapkamer"
+    Group item=Setup_Living_Room label="Woonkamer"
+    Group item=Setup_Hal_Achter label="Hal achter"
+    Group item=Setup_Toilet label="Toilet"
+
+    Group item=Countdown
+
+}

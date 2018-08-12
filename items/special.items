@@ -1,0 +1,6 @@
+Group Bed
+
+Dimmer	Bed_Marielle_Hoofd		"Bed hoofd Marielle [%.1f]"	<bedroom> (FF_Upstairs, Bed)
+Dimmer	Bed_Marielle_Voet		"Bed voet Marielle [%.1f]" <girl_2>	(FF_Upstairs, Bed)
+Dimmer	Bed_Job_Hoofd		"Bed hoofd Job [%.1f]" <bedroom>	(FF_Upstairs, Bed)
+Dimmer	Bed_Job_Voet		"Bed voet Job [%.1f]"	<man_2> (FF_Upstairs, Bed)

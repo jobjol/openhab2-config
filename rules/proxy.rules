@@ -1,0 +1,65 @@
+import org.openhab.core.library.types.*
+import org.openhab.core.persistence.*
+import org.openhab.model.script.actions.*
+
+rule "Light control received command"
+when
+    Member of LightControls received command
+then
+    // Get access to all the relevant Items
+    val lightName = triggeringItem.name.split("__").get(0)
+    val source = triggeringItem.name.split("__").get(1)
+
+    val proxy = LightControls.members.findFirst[ l | l.name == lightName + "__Proxy" ]
+    val device = LightControls.members.findFirst[ l | l.name == lightName ]
+    val ui = LightControls.members.findFirst[ l | l.name == lightName + "__UI" ]
+    val rules = LightControls.members.findFirst[ l | l.name == lightName + "__Rules" ]
+    val button = LightControls.members.findFirst[ l | l.name == lightName + "__Button" ]
+    val motion = LightControls.members.findFirst[ l | l.name == lightName + "__Motion" ]
+    val scene = LightControls.members.findFirst[ l | l.name == lightName + "__Scene" ]
+    val setby = LightControls.members.findFirst[ l | l.name == lightName + "__Setby" ]
+    // The Proxy Item should never receive a command
+    logWarn("proxy", receivedCommand.toString)
+    if(source === "Proxy") {
+        logWarn("light", "Received command on " + triggeringItem.name + ", this should not occur, ignoring.")
+        return;
+    }
+
+    // When a command comes in from any source not the Device, a command gets sent to the Device
+    // This let's us skip this command so we don't end up in an infinite loop.
+    if(source === "Device") {
+        Thread::sleep(250) // experiment, may not be needed, may need to be longer, give the Item registry time to update the proxy
+        if(receivedCommand == proxy.state) return;
+
+        // If device doesnt match proxy state, update it to it.
+        if(receivedCommand !== proxy.state) {
+          device.sendCommand(proxy.state.toString)
+        }
+    }
+
+    // Detect whether the light was triggered manually or automatically and do what needs to be done
+    if(source === NULL || source === "UI" || source === "Button") {
+        // manually controlled
+    }
+    else {
+        if (source === "Motion") {
+          // When lamp is already on manually, do nothing
+          if (proxy.state > 0 && setby.state != "Motion") {
+            return;
+          }
+        }
+    }
+
+    // Forward the new state to those Items that are not already in the new state. Use sendCommand
+    // for the device so the light actually turns on/off.
+    if(proxy.state === null || proxy.state !== receivedCommand) {
+      proxy.postUpdate(receivedCommand.toString)
+      logWarn("proxy", "proxy updated")
+    }
+    setby.postUpdate(source)
+    if(ui.state != receivedCommand) ui.postUpdate(receivedCommand.toString)
+    if(rules.state != receivedCommand) rules.postUpdate(receivedCommand.toString)
+    if(button.state != receivedCommand) button.postUpdate(receivedCommand.toString)
+    if(device.state != receivedCommand) device.sendCommand(receivedCommand.toString)
+end
+

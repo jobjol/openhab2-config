@@ -1,0 +1,15 @@
+Strategies {
+    everyMinute : "0 * * * * ?"
+    everyHour   : "0 0 * * * ?"
+    everyDay    : "0 0 0 * * ?"
+    default = everyChange, restoreOnStartup
+}
+
+Items {
+    // persist all items once a day and on every change and restore them from the db at startup
+    * : strategy = everyChange, everyHour, restoreOnStartup
+
+    // additionally, persist all temperature and weather values every hour
+       // gTemperatur* : strategy = everyHour, restoreOnStartup
+}
+

@@ -1,0 +1,91 @@
+import org.openhab.core.persistence.*
+import org.eclipse.smarthome.model.script.actions.Timer
+
+var Timer mFadeTimer = null
+
+rule "Evening started"
+when
+  Channel 'astro:sun:local:civilDusk#event' triggered END or
+  Item Debug changed to ON
+then
+var i = 1
+  //while ((i=i+1) < 4) {
+    Light_Garden_color__Rules.sendCommand(Light_Garden_color__Scene.state.toString)
+    Thread::sleep(250)
+    Light_Garden__Rules.sendCommand(Light_Garden__Scene.state)
+    Thread::sleep(250)
+    Light_Garden_2_color__Rules.sendCommand(Light_Garden_color__Scene.state.toString)
+    Thread::sleep(250)
+    Light_Garden_2__Rules.sendCommand(Light_Garden__Scene.state)
+    Thread::sleep(250)
+    Light_Frontdoor_1_color__Rules.sendCommand(Light_Frontdoor_1_color__Scene.state.toString)
+    Thread::sleep(250)
+    if (Light_Frontdoor_2__Scene.state > 0) {
+      Light_Frontdoor_1__Rules.sendCommand(Light_Frontdoor_1__Scene.state)
+       Thread::sleep(250)
+    }
+    Light_Frontdoor_2_color__Rules.sendCommand(Light_Frontdoor_2_color__Scene.state.toString)
+    Thread::sleep(250)
+    if (Light_Frontdoor_2__Scene.state > 0) {
+      Light_Frontdoor_2__Rules.sendCommand(Light_Frontdoor_2__Scene.state)
+      Thread::sleep(250)
+    }
+    sendCommand(Light_Front_Garden_Left__Rules, Light_Front_Garden_Left__Scene.state)
+    Thread::sleep(250)
+    sendCommand(Light_Front_Garden_Right__Rules, Light_Front_Garden_Right__Scene.state)
+    Thread::sleep(250)
+    Light_Shed_Garden__Rules.sendCommand(Light_Shed_Garden__Scene.state)
+    Thread::sleep(250)
+  //}
+end
+
+rule "Morning started"
+when
+  Time cron "0 0 2 * * ? *" or
+  Channel 'astro:sun:local:astroDawn#event' triggered or
+  Item Debug changed to OFF
+then
+  var i = 1
+  //while ((i=i+1) < 4) {
+    Light_Garden__Rules.sendCommand(0)
+    Thread::sleep(250)
+    Light_Garden_2__Rules.sendCommand(0)
+    Light_Frontdoor_1__Rules.sendCommand(0)
+    Thread::sleep(250)
+    Light_Frontdoor_1_color__Rules.sendCommand("0,0,0")
+    Thread::sleep(550)
+    Light_Frontdoor_2__Rules.sendCommand(0)
+    Thread::sleep(250)
+    Light_Frontdoor_2_color__Rules.sendCommand("0,0,0")
+    Light_Front_Garden_Left__Rules.sendCommand(0)
+    Thread::sleep(250)
+    Light_Front_Garden_Right__Rules.sendCommand(0)
+    Thread::sleep(250)
+    Light_Shed_Garden__Rules.sendCommand(0)
+    Thread::sleep(250)
+  //}
+end
+
+rule "Zigbee fix"
+when
+  Time cron "10 * * * * ? *" or
+  Channel 'astro:sun:local:astroDawn#event' triggered or
+  Item Debug changed to OFF
+then
+  var i = 1
+    if (Light_Frontdoor_1__Proxy.state > 0) {
+      //Light_Frontdoor_1__Rules.sendCommand(Light_Frontdoor_1__Proxy.state)
+      //Thread::sleep(950)
+    }
+    Light_Frontdoor_1_color__Rules.sendCommand((Light_Frontdoor_1_color__Proxy.state).toString)
+    Thread::sleep(550)
+    if (Light_Frontdoor_2__Proxy.state > 0) {
+      //Light_Frontdoor_2__Rules.sendCommand(Light_Frontdoor_2__Proxy.state)
+      //Thread::sleep(950)
+    }
+    Light_Frontdoor_2_color__Rules.sendCommand((Light_Frontdoor_2_color__Proxy.state).toString)
+    Light_Front_Garden_Left__Rules.sendCommand(Light_Front_Garden_Left__Proxy.state)
+    Thread::sleep(250)
+    Light_Front_Garden_Right__Rules.sendCommand(Light_Front_Garden_Right__Proxy.state)
+end
+

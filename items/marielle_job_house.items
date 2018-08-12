@@ -1,0 +1,596 @@
+Group    Home                  "M&J Home"       <house>
+
+Group    GF                    "Ground Floor"   <groundfloor>   (Home)
+Group    FF                    "First Floor"    <firstfloor>    (Home)
+
+Group    GF_Downstairs         "Beneden"     <cellar>        (Home, GF)
+Group    FF_Upstairs           "Boven"       <firstfloor>    (Home, FF)
+Switch	    Light_Group_BG			"Benedenverdieping licht"	(Home, GF)
+Switch	    Light_Group_FF			"Bovenverdieping licht"		(Home, FF)
+Group	    Light_Group_Master		"Huisverlichting"		(Light_Root_Dimmer, Home)
+
+Group    Light_GF_Living             "Woonkamer"    <groundfloor>   (Home, GF)
+Group    Light_GF_Toilet             "Toilet"    <groundfloor>   (Home, GF)
+Group    Light_GF_Kitchen             "Keuken"    <groundfloor>   (Home, GF)
+Group    Light_GF_Garden             "Tuin"    <groundfloor>   (Home, GF)
+Group    Light_GF_Hallway             "Hal"    <groundfloor>   (Home, GF)
+Group    Light_GF_RearEntry             "Hal achter"    <groundfloor>   (Home, GF)
+Group    Light_GF_Frontdoor             "Voordeur"    <groundfloor>   (Home, GF)
+Group    Light_FF_Office           "Werkkamer"       <firstfloor>    (Home, FF)
+Group    Light_FF_Bedroom           "Slaapkamer"       <firstfloor>    (Home, FF)
+Group    Light_FF_Overloop           "Overloop"       <firstfloor>    (Home, FF)
+
+Group:Color    Color_GF_Living             "Woonkamer"    <groundfloor>   (Home, GF)
+Group:Color    Color_GF_Toilet             "Toilet"    <groundfloor>   (Home, GF)
+Group:Color    Color_GF_Kitchen             "Keuken"    <groundfloor>   (Home, GF)
+Group:Color    Color_GF_Garden             "Tuin"    <groundfloor>   (Home, GF)
+Group:Color    Color_GF_Hallway             "Hal"    <groundfloor>   (Home, GF)
+Group:Color    Color_GF_RearEntry             "Hal achter"    <groundfloor>   (Home, GF)
+Group:Color    Color_FF_Office           "Werkkamer"       <firstfloor>    (Home, FF)
+Group:Color    Color_FF_Bedroom           "Slaapkamer"       <firstfloor>    (Home, FF)
+Group:Color    Color_FF_Overloop           "Overloop"       <firstfloor>    (Home, FF)
+Group:Color    Color_GF_Frontdoor             "Voordeur"    <groundfloor>   (Home, GF)
+
+Group:Dimmer:AVG Light_Root_Dimmer
+Group:Dimmer:AVG Light_BG_Dimmer
+Group:Dimmer:AVG Light_FF_Dimmer
+
+Group:Color:AVG Light_BG_Color
+
+Group Battery
+
+Dimmer	Group_Light_BG			"Benedenverdieping licht"	(Light_BG_Dimmer)
+Color	Group_Color_BG			"Benedenverdieping kleur"	(Light_BG_Color)
+Dimmer	Group_Light_FF			"Bovenverdieping licht"		(Light_FF_Dimmer)
+Dimmer	Group_Light_Master		"Huisverlichting"		(Light_Root_Dimmer, Home)
+
+String VoiceCommand
+
+// Light controls
+Group LightControls
+Group BG_Color
+
+Dimmer	Light_Werkkamer_Plafond		"Werkkamer Plafond lamp [%.1f]"	(LightControls, FF_Upstairs, Light_Root_Dimmer, Light_FF_Office, Light_Group_FF)		{ channel="zwave:device:230436c3:node16:switch_dimmer" }
+Dimmer  Light_Werkkamer_Plafond__Proxy (LightControls)  // Proxy
+Dimmer  Light_Werkkamer_Plafond__UI (LightControls, Light_FF_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Werkkamer_Plafond__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Werkkamer_Plafond__Button (LightControls) // control for the Switch
+Dimmer  Light_Werkkamer_Plafond__Motion (LightControls) // control for the Motion detectors
+String  Light_Werkkamer_Plafond__Setby (LightControls) // Who initiated the last change?
+
+Color	Light_Werkkamer_Plafond_color		"Werkkamer Plafond lamp [%.1f]"	(LightControls, FF_Upstairs, Light_Root_Dimmer)		{ channel="zwave:device:230436c3:node16:color_color" }
+Color  Light_Werkkamer_Plafond_color__Proxy (LightControls)  // Proxy
+Color  Light_Werkkamer_Plafond_color__UI (LightControls, Light_FF_Dimmer, BG_color)     // control for the UIs (sitemap, HABPanel, etc)
+Color  Light_Werkkamer_Plafond_color__Rules (LightControls)  // control for the Rules
+Color  Light_Werkkamer_Plafond_color__Button (LightControls) // control for the Switch
+Color  Light_Werkkamer_Plafond_color__Motion (LightControls) // control for the Motion detectors
+String  Light_Werkkamer_Plafond_color__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Werkkamer_Plafond_color_temp		"Werkkamer Plafond lamp [%.1f]"	(LightControls, FF_Upstairs, Light_Root_Dimmer)		{ channel="zwave:device:230436c3:node16:color_temperature" }
+Dimmer  Light_Werkkamer_Plafond_color_temp__Proxy (LightControls)  // Proxy
+Dimmer  Light_Werkkamer_Plafond_color_temp__UI (LightControls, Light_FF_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Werkkamer_Plafond_color_temp__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Werkkamer_Plafond_color_temp__Button (LightControls) // control for the Switch
+Dimmer Light_Werkkamer_Plafond_color_temp__Motion (LightControls) // control for the Motion detectors
+String  Light_Werkkamer_Plafond_color_temp__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Overloop_Plafond		"Overloop plafond lamp [%.1f]"	(LightControls, FF_Upstairs, Light_Root_Dimmer, Light_FF_Overloop, Light_Group_FF)		{ channel="zwave:device:230436c3:node19:switch_dimmer" }
+Dimmer  Light_Overloop_Plafond__Proxy (LightControls)  // Proxy
+Dimmer  Light_Overloop_Plafond__UI (LightControls, Light_FF_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Overloop_Plafond__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Overloop_Plafond__Button (LightControls) // control for the Switch
+Dimmer  Light_Overloop_Plafond__Motion (LightControls) // control for the Motion detectors
+String  Light_Overloop_Plafond__Setby (LightControls) // Who initiated the last change?
+
+Color	Light_Overloop_Plafond_color		"Overloop plafond lamp [%.1f]"	(LightControls, FF_Upstairs, Light_Root_Dimmer)		{ channel="zwave:device:230436c3:node19:color_color" }
+Color  Light_Overloop_Plafond_color__Proxy (LightControls)  // Proxy
+Color  Light_Overloop_Plafond_color__UI (LightControls, Light_FF_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Color  Light_Overloop_Plafond_color__Rules (LightControls)  // control for the Rules
+Color  Light_Overloop_Plafond_color__Button (LightControls) // control for the Switch
+Color  Light_Overloop_Plafond_color__Motion (LightControls) // control for the Motion detectors
+String  Light_Overloop_Plafond_color__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Overloop_Plafond_color_temp		"Overloop plafond lamp [%.1f]"	(LightControls, FF_Upstairs, Light_Root_Dimmer)		{ channel="zwave:device:230436c3:node19:color_temperature" }
+Dimmer  Light_Overloop_Plafond_color_temp__Proxy (LightControls)  // Proxy
+Dimmer  Light_Overloop_Plafond_color_temp__UI (LightControls, Light_FF_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Overloop_Plafond_color_temp__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Overloop_Plafond_color_temp__Button (LightControls) // control for the Switch
+Dimmer  Light_Overloop_Plafond_color_temp__Motion (LightControls) // control for the Motion detectors
+String  Light_Overloop_Plafond_color_temp__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Shed_Garden		"Tuinverlichting schuur [%.1f]"	(LightControls, GF_Downstairs, Light_Root_Dimmer, Light_GF_Garden)		{ channel="zwave:device:230436c3:node17:switch_dimmer" }
+Dimmer  Light_Shed_Garden__Proxy (LightControls)  // Proxy
+Dimmer  Light_Shed_Garden__UI (LightControls, Light_BG_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Shed_Garden__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Shed_Garden__Button (LightControls) // control for the Switch
+Dimmer  Light_Shed_Garden__Motion (LightControls) // control for the Motion detectors
+Dimmer  Light_Shed_Garden__Scene (LightControls) // control for night mode
+String  Light_Shed_Garden__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Garden		"Tuinverlichting [%.1f]"	(LightControls, GF_Downstairs, Light_Root_Dimmer, Light_GF_Garden)		{ channel="zwave:device:230436c3:node7:switch_dimmer" }
+Dimmer  Light_Garden__Proxy (LightControls)  // Proxy
+Dimmer  Light_Garden__UI (LightControls, Light_BG_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Garden__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Garden__Button (LightControls) // control for the Switch
+Dimmer  Light_Garden__Motion (LightControls) // control for the Motion detectors
+Dimmer  Light_Garden__Scene (LightControls) // control for night mode
+String  Light_Garden__Setby (LightControls) // Who initiated the last change?
+
+Color	 Light_Garden_color		"Tuinverlichting kleur [%.1f]"	(LightControls, GF_Downstairs, Light_Root_Dimmer, Group_Color_BG)		{ channel="zwave:device:230436c3:node7:color_color" }
+Color  Light_Garden_color__Proxy (LightControls)  // Proxy
+Color  Light_Garden_color__UI (LightControls, Light_BG_Dimmer, BG_color)     // control for the UIs (sitemap, HABPanel, etc)
+Color  Light_Garden_color__Rules (LightControls)  // control for the Rules
+Color  Light_Garden_color__Button (LightControls) // control for the Switch
+Color  Light_Garden_color__Motion (LightControls) // control for the Motion detectors
+Color  Light_Garden_color__Scene (LightControls) // control for night mode
+String  Light_Garden_color__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Garden_color_temp		"Tuinverlichting [%.1f]"	(LightControls, GF_Downstairs)		{ channel="zwave:device:230436c3:node7:color_temperature" }
+Dimmer  Light_Garden_color_temp__Proxy (LightControls)  // Proxy
+Dimmer  Light_Garden_color_temp__UI (LightControls, Light_BG_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Garden_color_temp__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Garden_color_temp__Button (LightControls) // control for the Switch
+Dimmer  Light_Garden_color_temp__Motion (LightControls) // control for the Motion detectors
+Dimmer  Light_Garden_color_temp__Scene (LightControls) // control for night mode
+String  Light_Garden_color_temp__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Garden_2		"Tuinverlichting [%.1f]"	(LightControls, GF_Downstairs, Light_Root_Dimmer, Light_GF_Garden)		{ channel="zwave:device:230436c3:node9:switch_dimmer" }
+Dimmer  Light_Garden_2__Proxy (LightControls)  // Proxy
+Dimmer  Light_Garden_2__UI (LightControls, Light_BG_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Garden_2__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Garden_2__Button (LightControls) // control for the Switch
+Dimmer  Light_Garden_2__Motion (LightControls) // control for the Motion detectors
+Dimmer  Light_Garden_2__Scene (LightControls) // control for night mode
+String  Light_Garden_2__Setby (LightControls) // Who initiated the last change?
+
+Color	 Light_Garden_2_color		"Tuinverlichting kleur [%.1f]"	(LightControls, GF_Downstairs, Light_Root_Dimmer, Group_Color_BG)		{ channel="zwave:device:230436c3:node9:color_color" }
+Color  Light_Garden_2_color__Proxy (LightControls)  // Proxy
+Color  Light_Garden_2_color__UI (LightControls, Light_BG_Dimmer, BG_color)     // control for the UIs (sitemap, HABPanel, etc)
+Color  Light_Garden_2_color__Rules (LightControls)  // control for the Rules
+Color  Light_Garden_2_color__Button (LightControls) // control for the Switch
+Color  Light_Garden_2_color__Motion (LightControls) // control for the Motion detectors
+Color  Light_Garden_2_color__Scene (LightControls) // control for night mode
+String  Light_Garden_2_color__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Garden_2_color_temp		"Tuinverlichting [%.1f]"	(LightControls, GF_Downstairs, Light_Root_Dimmer)		{ channel="zwave:device:230436c3:node9:color_temperature" }
+Dimmer  Light_Garden_2_color_temp__Proxy (LightControls)  // Proxy
+Dimmer  Light_Garden_2_color_temp__UI (LightControls, Light_BG_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Garden_2_color_temp__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Garden_2_color_temp__Button (LightControls) // control for the Switch
+Dimmer  Light_Garden_2_color_temp__Motion (LightControls) // control for the Motion detectors
+Dimmer  Light_Garden_2_color_temp__Scene (LightControls) // control for night mode
+String  Light_Garden_2_color_temp__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Frontdoor_1		"Voordeur 1 [%.1f]"	(LightControls, GF_Downstairs, Light_Root_Dimmer, Light_GF_Garden, Light_GF_Frontdoor)		{ channel="zigbee:device:2a8c1b52:00158d00024f6c17:00158D00024F6C17_1_color_temperature" }
+Dimmer  Light_Frontdoor_1__Proxy (LightControls)  // Proxy
+Dimmer  Light_Frontdoor_1__UI (LightControls, Light_BG_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Frontdoor_1__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Frontdoor_1__Button (LightControls) // control for the Switch
+Dimmer  Light_Frontdoor_1__Motion (LightControls) // control for the Motion detectors
+Dimmer  Light_Frontdoor_1__Scene (LightControls) // control for the default night setting
+String  Light_Frontdoor_1__Setby (LightControls) // Who initiated the last change?
+
+Color	 Light_Frontdoor_1_color		"Voordeur 1 Kleur [%.1f]"	(LightControls, GF_Downstairs, Light_Root_Dimmer, Group_Color_BG, Color_GF_Frontdoor)		{ channel="zigbee:device:2a8c1b52:00158d00024f6c17:00158D00024F6C17_1_color_color" }
+Color  Light_Frontdoor_1_color__Proxy (LightControls)  // Proxy
+Color  Light_Frontdoor_1_color__UI (LightControls, Light_BG_Dimmer, BG_color)     // control for the UIs (sitemap, HABPanel, etc)
+Color  Light_Frontdoor_1_color__Rules (LightControls)  // control for the Rules
+Color  Light_Frontdoor_1_color__Button (LightControls) // control for the Switch
+Color  Light_Frontdoor_1_color__Motion (LightControls) // control for the Motion detectors
+Color  Light_Frontdoor_1_color__Scene (LightControls) // control for the default night setting
+String  Light_Frontdoor_1_color__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Frontdoor_2		"Voordeur 2 [%.1f]"	(LightControls, GF_Downstairs, Light_Root_Dimmer, Light_GF_Garden, Light_GF_Frontdoor)		{ channel="zigbee:device:2a8c1b52:00158d00024f6ba4:00158D00024F6BA4_1_color_temperature" }
+Dimmer  Light_Frontdoor_2__Proxy (LightControls)  // Proxy
+Dimmer  Light_Frontdoor_2__UI (LightControls, Light_BG_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Frontdoor_2__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Frontdoor_2__Button (LightControls) // control for the Switch
+Dimmer  Light_Frontdoor_2__Motion (LightControls) // control for the Motion detectors
+Dimmer  Light_Frontdoor_2__Scene (LightControls) // control for the default night setting
+String  Light_Frontdoor_2__Setby (LightControls) // Who initiated the last change?
+
+Color  Light_Frontdoor_2_color		"Voordeur 2 Kleur [%.1f]"	(LightControls, GF_Downstairs, Light_Root_Dimmer, Color_GF_Frontdoor)		{ channel="zigbee:device:2a8c1b52:00158d00024f6ba4:00158D00024F6BA4_1_color_color" }
+Color  Light_Frontdoor_2_color__Proxy (LightControls)  // Proxy
+Color  Light_Frontdoor_2_color__UI (LightControls, Light_BG_Dimmer, BG_color)     // control for the UIs (sitemap, HABPanel, etc)
+Color  Light_Frontdoor_2_color__Rules (LightControls)  // control for the Rules
+Color  Light_Frontdoor_2_color__Button (LightControls) // control for the Switch
+Color  Light_Frontdoor_2_color__Motion (LightControls) // control for the Motion detectors
+Color  Light_Frontdoor_2_color__Scene (LightControls) // control for the default night setting
+String  Light_Frontdoor_2_color__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Front_Garden_Left		"Voortuin links [%.1f]"	(LightControls, GF_Downstairs, Light_Root_Dimmer, Light_GF_Garden)		{ channel="zigbee:device:2a8c1b52:00158d000198623e:00158D000198623E_1_switch_level" }
+Dimmer  Light_Front_Garden_Left__Proxy (LightControls)  // Proxy
+Dimmer  Light_Front_Garden_Left__UI (LightControls, Light_BG_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Front_Garden_Left__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Front_Garden_Left__Button (LightControls) // control for the Switch
+Dimmer  Light_Front_Garden_Left__Motion (LightControls) // control for the Motion detectors
+Dimmer  Light_Front_Garden_Left__Scene (LightControls) // control for the default night setting
+String  Light_Front_Garden_Left__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Front_Garden_Right		"Voortuin rechts [%.1f]"	(LightControls, GF_Downstairs, Light_Root_Dimmer, Light_GF_Garden)		{ channel="zigbee:device:2a8c1b52:00158d0001982836:00158D0001982836_1_switch_level" }
+Dimmer  Light_Front_Garden_Right__Proxy (LightControls)  // Proxy
+Dimmer  Light_Front_Garden_Right__UI (LightControls, Light_BG_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Front_Garden_Right__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Front_Garden_Right__Button (LightControls) // control for the Switch
+Dimmer  Light_Front_Garden_Right__Motion (LightControls) // control for the Motion detectors
+Dimmer  Light_Front_Garden_Right__Scene (LightControls) // control for the default night setting
+String  Light_Front_Garden_Right__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Hallway			"Hal voor [%.1f]"		(LightControls, GF_Downstairs, Light_Root_Dimmer, Light_GF_Hallway, Light_Group_BG)		{ channel="zigbee:device:2a8c1b52:00158d0001983ff8:00158D0001983FF8_1_switch_level" }
+Dimmer  Light_Hallway__Proxy (LightControls)  // Proxy
+Dimmer  Light_Hallway__UI (LightControls, Light_BG_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Hallway__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Hallway__Button (LightControls) // control for the Switch
+Dimmer  Light_Hallway__Motion (LightControls) // control for the Motion detectors
+String  Light_Hallway__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Kitchen_Table_Light	"Keuken tafel [%.1f]"		(LightControls, GF_Downstairs, Light_Root_Dimmer, Light_GF_Kitchen, Light_Group_BG)		{ channel="zwave:device:230436c3:node4:switch_dimmer" }
+Dimmer  Light_Kitchen_Table_Light__Proxy (LightControls)  // Proxy
+Dimmer  Light_Kitchen_Table_Light__UI (LightControls, Light_BG_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Kitchen_Table_Light__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Kitchen_Table_Light__Button (LightControls) // control for the Switch
+Dimmer  Light_Kitchen_Table_Light__Motion (LightControls) // control for the Motion detectors
+String  Light_Kitchen_Table_Light__Setby (LightControls) // Who initiated the last change?
+
+Color 	Light_Kitchen_Table_Light_color	"Keuken tafel [%.1f]"		(LightControls, GF_Downstairs, Light_Root_Dimmer, Group_Color_BG)		{ channel="zwave:device:230436c3:node4:color_color" }
+Color   Light_Kitchen_Table_Light_color__Proxy (LightControls)  // Proxy
+Color   Light_Kitchen_Table_Light_color__UI (LightControls, Light_BG_Dimmer, BG_color)     // control for the UIs (sitemap, HABPanel, etc)
+Color   Light_Kitchen_Table_Light_color__Rules (LightControls)  // control for the Rules
+Color   Light_Kitchen_Table_Light_color__Button (LightControls) // control for the Switch
+Color   Light_Kitchen_Table_Light_color__Motion (LightControls) // control for the Motion detectors
+String  Light_Kitchen_Table_Light_color__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Kitchen_Table_Light_color_temp	"Keuken tafel [%.1f]"		(LightControls, GF_Downstairs, Light_Root_Dimmer)		{ channel="zwave:device:230436c3:node4:switch_dimmer" }
+Dimmer  Light_Kitchen_Table_Light_color_temp__Proxy (LightControls)  // Proxy
+Dimmer  Light_Kitchen_Table_Light_color_temp__UI (LightControls, Light_BG_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Kitchen_Table_Light_color_temp__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Kitchen_Table_Light_color_temp__Button (LightControls) // control for the Switch
+Dimmer  Light_Kitchen_Table_Light_color_temp__Motion (LightControls) // control for the Motion detectors
+String  Light_Kitchen_Table_Light_color_temp__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Kitchen	"Keuken [%.1f]"		(LightControls, GF_Downstairs, Light_Root_Dimmer, Light_GF_Kitchen, Light_Group_BG)		{ channel="zwave:device:230436c3:node15:switch_dimmer" }
+Dimmer  Light_Kitchen__Proxy (LightControls)  // Proxy
+Dimmer  Light_Kitchen__UI (LightControls, Light_BG_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Kitchen__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Kitchen__Button (LightControls) // control for the Switch
+Dimmer  Light_Kitchen__Motion (LightControls) // control for the Motion detectors
+String  Light_Kitchen__Setby (LightControls) // Who initiated the last change?
+
+Switch	Light_Kitchen_Switch	"Keuken switch [%s]"	(LightControls, GF_Downstairs)		{ channel="zwave:device:230436c3:node15:switch_binary" }
+Switch  Light_Kitchen_Switch__Proxy (LightControls)  // Proxy
+Switch  Light_Kitchen_Switch__UI (LightControls)     // control for the UIs (sitemap, HABPanel, etc)
+Switch  Light_Kitchen_Switch__Rules (LightControls)  // control for the Rules
+Switch  Light_Kitchen_Switch__Button (LightControls) // control for the Switch
+Switch  Light_Kitchen_Switch__Motion (LightControls) // control for the Motion detectors
+String  Light_Kitchen_Switch__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Living_Room_Towers	"Zuillampen [%.1f]"		(LightControls, GF_Downstairs, Light_BG_Dimmer, Light_Root_Dimmer, Light_GF_Living, Light_Group_BG)		{ channel="zwave:device:230436c3:node2:switch_dimmer" }
+Dimmer  Light_Living_Room_Towers__Proxy (LightControls)  // Proxy
+Dimmer  Light_Living_Room_Towers__UI (LightControls)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Living_Room_Towers__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Living_Room_Towers__Button (LightControls) // control for the Switch
+Dimmer  Light_Living_Room_Towers__Motion (LightControls) // control for the Motion detectors
+String  Light_Living_Room_Towers__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Bedroom_Color_Temp	"Slaapkamer kleur temp[%.1f]"	(LightControls, FF_Upstairs)		{ channel="zwave:device:230436c3:node10:color_temperature" }
+Dimmer  Light_Bedroom_Color_Temp__Proxy (LightControls)  // Proxy
+Dimmer  Light_Bedroom_Color_Temp__UI (LightControls)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Bedroom_Color_Temp__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Bedroom_Color_Temp__Button (LightControls) // control for the Switch
+Dimmer  Light_Bedroom_Color_Temp__Motion (LightControls) // control for the Motion detectors
+String  Light_Bedroom_Color_Temp__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Bedroom	"Slaapkamer p[%.1f]"	(LightControls, FF_Upstairs, Light_FF_Dimmer, Light_FF_Bedroom, Light_Group_FF, Light_Root_Dimmer)		{ channel="zwave:device:230436c3:node10:switch_dimmer" }
+Dimmer  Light_Bedroom__Proxy (LightControls)  // Proxy
+Dimmer  Light_Bedroom__UI (LightControls)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Bedroom__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Bedroom__Button (LightControls) // control for the Switch
+Dimmer  Light_Bedroom__Motion (LightControls) // control for the Motion detectors
+String  Light_Bedroom__Setby (LightControls) // Who initiated the last change?
+
+Color	  Light_Bedroom_Color		"Slaapkamer kleur [%.1f]"	(LightControls, FF_Upstairs, Light_Root_Dimmer)		{ channel="zwave:device:230436c3:node10:color_color" }
+Color   Light_Bedroom_Color__Proxy (LightControls)  // Proxy
+Color   Light_Bedroom_Color__UI (LightControls, Light_FF_Dimmer)     // control for the UIs (sitemap, HABPanel, etc)
+Color   Light_Bedroom_Color__Rules (LightControls)  // control for the Rules
+Color   Light_Bedroom_Color__Button (LightControls) // control for the Switch
+Color  Light_Bedroom_Color__Motion (LightControls) // control for the Motion detectors
+String  Light_Bedroom_Color__Setby (LightControls) // Who initiated the last change?
+
+Color	  Light_Living_Room_Color		"Woonkamer kleur [%.1f]"	(LightControls, GF_Downstairs, Light_Root_Dimmer, Group_Color_BG)		{ channel="zwave:device:230436c3:node3:color_color" }
+Color  Light_Living_Room_Color__Proxy (LightControls)  // Proxy
+Color  Light_Living_Room_Color__UI (LightControls, Light_BG_Dimmer, BG_color)     // control for the UIs (sitemap, HABPanel, etc)
+Color  Light_Living_Room_Color__Rules (LightControls)  // control for the Rules
+Color  Light_Living_Room_Color__Button (LightControls) // control for the Switch
+Color  Light_Living_Room_Color__Motion (LightControls) // control for the Motion detectors
+String  Light_Living_Room_Color__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Living_Room_Color_Temp	"Woonkamer kleur intensiteit [%.1f]"	(LightControls, GF_Downstairs)		{ channel="zwave:device:230436c3:node3:color_temperature" }
+Dimmer  Light_Living_Room_Color_Temp__Proxy (LightControls)  // Proxy
+Dimmer  Light_Living_Room_Color_Temp__UI (LightControls)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Living_Room_Color_Temp__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Living_Room_Color_Temp__Button (LightControls) // control for the Switch
+Dimmer  Light_Living_Room_Color_Temp__Motion (LightControls) // control for the Motion detectors
+String  Light_Living_Room_Color_Temp__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Living_Room	"Woonkamer [%.1f]"	(LightControls, GF_Downstairs, Light_GF_Living, Light_Group_BG)		{ channel="zwave:device:230436c3:node3:switch_dimmer" }
+Dimmer  Light_Living_Room__Proxy (LightControls)  // Proxy
+Dimmer  Light_Living_Room__UI (LightControls)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Living_Room__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Living_Room__Button (LightControls) // control for the Switch
+Dimmer  Light_Living_Room__Motion (LightControls) // control for the Motion detectors
+String  Light_Living_Room__Setby (LightControls) // Who initiated the last change?
+
+Color	  Light_Hal_Achter_Color		"Hal achter kleur [%.1f]"	(LightControls, GF_Downstairs, Light_Root_Dimmer)		{ channel="zwave:device:230436c3:node6:color_color" }
+Color  Light_Hal_Achter_Color__Proxy (LightControls)  // Proxy
+Color  Light_Hal_Achter_Color__UI (LightControls, Light_BG_Dimmer, BG_color)     // control for the UIs (sitemap, HABPanel, etc)
+Color  Light_Hal_Achter_Color__Rules (LightControls)  // control for the Rules
+Color  Light_Hal_Achter_Color__Button (LightControls) // control for the Switch
+Color  Light_Hal_Achter_Color__Motion (LightControls) // control for the Motion detectors
+String  Light_Hal_Achter_Color__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Hal_Achter_Color_Temp	"Hal achter kleur intensiteit [%.1f]"	(LightControls, GF_Downstairs)		{ channel="zwave:device:230436c3:node6:color_temperature" }
+Dimmer  Light_Hal_Achter_Color_Temp__Proxy (LightControls)  // Proxy
+Dimmer  Light_Hal_Achter_Color_Temp__UI (LightControls)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Hal_Achter_Color_Temp__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Hal_Achter_Color_Temp__Button (LightControls) // control for the Switch
+Dimmer  Light_Hal_Achter_Color_Temp__Motion (LightControls) // control for the Motion detectors
+String  Light_Hal_Achter_Color_Temp__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Hal_Achter	"Hal achter [%.1f]"	(LightControls, GF_Downstairs, Light_GF_RearEntry, Light_Group_BG)		{ channel="zwave:device:230436c3:node6:switch_dimmer" }
+Dimmer  Light_Hal_Achter__Proxy (LightControls)  // Proxy
+Dimmer  Light_Hal_Achter__UI (LightControls)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Hal_Achter__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Hal_Achter__Button (LightControls) // control for the Switch
+Dimmer  Light_Hal_Achter__Motion (LightControls) // control for the Motion detectors
+String  Light_Hal_Achter__Setby (LightControls) // Who initiated the last change?
+
+Dimmer	Light_Toilet	"Toilet [%.1f]"	(LightControls, GF_Downstairs, GF_Toilet, Light_Group_BG)		{ channel="zwave:device:230436c3:node12:switch_dimmer" }
+Dimmer  Light_Toilet__Proxy (LightControls)  // Proxy
+Dimmer  Light_Toilet__UI (LightControls)     // control for the UIs (sitemap, HABPanel, etc)
+Dimmer  Light_Toilet__Rules (LightControls)  // control for the Rules
+Dimmer  Light_Toilet__Button (LightControls) // control for the Switch
+Dimmer  Light_Toilet__Motion (LightControls) // control for the Motion detectors
+String  Light_Toilet__Setby (LightControls) // Who initiated the last change?
+
+Switch	Light_Toilet_Switch	"Toilet switch [%s]"	(LightControls, GF_Downstairs)		{ channel="zwave:device:230436c3:node12:switch_dimmer" }
+Switch  Light_Toilet_Switch__Proxy (LightControls)  // Proxy
+Switch  Light_Toilet_Switch__UI (LightControls)     // control for the UIs (sitemap, HABPanel, etc)
+Switch  Light_Toilet_Switch__Rules (LightControls)  // control for the Rules
+Switch  Light_Toilet_Switch__Button (LightControls) // control for the Switch
+Switch  Light_Toilet_Switch__Motion (LightControls) // control for the Motion detectors
+String  Light_Toilet_Switch__Setby (LightControls) // Who initiated the last change?
+Number Light_Toilet_Watts "Toilet watt" (GF_Downstairs) {channel="zwave:device:230436c3:node12:meter_watts"}
+Number Light_Toilet_Kwh "Toilet kWh" (GF_Downstairs) {channel="zwave:device:230436c3:node12:meter_kwh"}
+
+Switch	Light_Schuur	"Schuur switch [%s]"	(LightControls, GF_Downstairs)		{ channel="zwave:device:230436c3:node18:switch_binary" }
+Switch  Light_Schuur__Proxy (LightControls)  // Proxy
+Switch  Light_Schuur__UI (LightControls)     // control for the UIs (sitemap, HABPanel, etc)
+Switch  Light_Schuur__Rules (LightControls)  // control for the Rules
+Switch  Light_Schuur__Button (LightControls) // control for the Switch
+Switch  Light_Schuur__Motion (LightControls) // control for the Motion detectors
+String  Light_Schuur__Setby (LightControls) // Who initiated the last change?
+
+Switch	Light_Schuur_1	"Schuur switch [%s]"	(LightControls, GF_Downstairs)		{ channel="zwave:device:230436c3:node18:switch_binary1" }
+Switch	Light_Schuur_2	"Schuur switch [%s]"	(LightControls, GF_Downstairs)		{ channel="zwave:device:230436c3:node18:switch_binary2" }
+
+
+
+Group WakeUpAlarm
+Number WakeUpHour           "Wake up hour [%d]" <clock> (gRestore,WakeUpAlarm)
+Number WakeUpMinute         "Wake up minute [%d]" <clock> (gRestore,WakeUpAlarm)
+Number WakeUpFadeTime       "Wake up Time Step [%d]" <clock> (gRestore,WakeUpAlarm)
+Switch WakeUpAlarmSwitch    "Wake up alarm [%s]" (gRestore,WakeUpAlarm)
+Switch WakeUpMusic	        "Wake up with Sonos music"
+Switch WakeUpMusicFade      "Fade sound level with light level"
+Number WakeUpMusicVolume    "Wake up target Sonos volume [%d]" <clock> (gRestore,WakeUpAlarm)
+Switch WakeUpAlarmTriggered "Wake up alarm triggered [%s]"  <alarm> (gRestore,WakeUpAlarm)
+
+Group Sonos <player>
+
+Player Sonos_Controller   "Controller"                          (Sonos) {channel="sonos:PLAY1:RINCON_5CAAFD7D304C01400:control"}
+Dimmer Sonos_Volume       "Volume [%.1f %%]" <soundvolume>      (Sonos) {channel="sonos:PLAY1:RINCON_5CAAFD7D304C01400:volume"}
+Switch Sonos_Mute         "Mute"             <soundvolume_mute> (Sonos) {channel="sonos:PLAY1:RINCON_5CAAFD7D304C01400:mute"}
+Switch Sonos_LED          "LED"              <switch>           (Sonos) {channel="sonos:PLAY1:RINCON_5CAAFD7D304C01400:led"}
+String Sonos_CurrentTrack "Now playing [%s]" <text>             (Sonos) {channel="sonos:PLAY1:RINCON_5CAAFD7D304C01400:currenttrack"}
+String Sonos_State        "Status [%s]"      <text>             (Sonos) {channel="sonos:PLAY1:RINCON_5CAAFD7D304C01400:state"}
+
+Player Sonos_2_Controller   "Controller"                          (Sonos) {channel="sonos:PLAY1:RINCON_5CAAFD7D30FE01400:control"}
+Dimmer Sonos_2_Volume       "Volume [%.1f %%]" <soundvolume>      (Sonos) {channel="sonos:PLAY1:RINCON_5CAAFD7D30FE01400:volume"}
+Switch Sonos_2_Play         "Play"      <text>                    (Sonos) {channel="sonos:PLAY1:RINCON_5CAAFD7D30FE01400:play"}
+Switch Sonos_2_Mute         "Mute"             <soundvolume_mute> (Sonos) {channel="sonos:PLAY1:RINCON_5CAAFD7D30FE01400:mute"}
+Switch Sonos_2_LED          "LED"              <switch>           (Sonos) {channel="sonos:PLAY1:RINCON_5CAAFD7D30FE01400:led"}
+String Sonos_2_CurrentTrack "Now playing [%s]" <text>             (Sonos) {channel="sonos:PLAY1:RINCON_5CAAFD7D30FE01400:currenttrack"}
+String Sonos_2_State        "Status [%s]"      <text>             (Sonos) {channel="sonos:PLAY1:RINCON_5CAAFD7D30FE01400:state"}
+String Sonos_2_radioId        "Radio id [%s]"      <text>         (Sonos) {channel="sonos:PLAY1:RINCON_5CAAFD7D30FE01400:tuneinstationid"}
+Switch Sonos_2_Huminity "Play when getting wet"
+Switch Sonos_2_Huminity_GrooveSalad "Set to Groove Salad when getting wet"
+Dimmer Sonos_2_Huminity_MaxVol "Max wet Volume [%.1f]" <soundvolume>
+
+Group Door
+Contact Door_Front "Front Door" (GF_Downstairs, Windows) {channel="mihome:sensor_magnet:158d000200b284:isOpen"}
+Number Door_Front_Battery "Front Door Battery" <battery> (GF_Downstairs, Windows, Battery) {channel="mihome:sensor_magnet:158d000200b284:batteryLevel"}
+Contact Brievenbus "Brievenbus" (GF_Downstairs, Windows) {channel="mihome:sensor_magnet:158d0001f3441c:isOpen"}
+Number Brievenbus_Battery "Brievenbus Battery" <battery> (GF_Downstairs, Windows, Battery) {channel="mihome:sensor_magnet:158d0001f3441c:batteryLevel"}
+Contact Door_Toilet "Toilet Door" (GF_Downstairs, Windows) {channel="mihome:sensor_magnet:158d0001e7645a:isOpen"}
+Number Door_Toilet_Battery "Toilet Door Battery" <battery> (GF_Downstairs, Windows, Battery) {channel="mihome:sensor_magnet:158d0001e7645a:batteryLevel"}
+Contact Door_Achter_Binnen "Toilet Door" (GF_Downstairs, Windows) {channel="mihome:sensor_magnet:158d0001f394a9:isOpen"}
+Number Door_Achter_Binnen_Battery "Achter binnendeur Battery" <battery> (GF_Downstairs, Windows, Battery) {channel="mihome:sensor_magnet:158d0001f394a9:batteryLevel"}
+Contact Door_Achter "Achter Door" (GF_Downstairs, Windows) {channel="mihome:sensor_magnet:158d0001f396cf:isOpen"}
+Number Door_Achter_Battery "Achter Door Battery" <battery> (GF_Downstairs, Windows, Battery) {channel="mihome:sensor_magnet:158d0001f396cf:batteryLevel"}
+Contact Door_Bedroom "Bedroom Door" (GF_Downstairs, Windows) {channel="mihome:sensor_magnet:158d000200ac1c:isOpen"}
+Number Door_Bedroom_Battery "Bedroom Door Battery" <battery> (GF_Downstairs, Windows, Battery) {channel="mihome:sensor_magnet:158d000200ac1c:batteryLevel"}
+Contact Door_Tussen "Tussendeur" (GF_Downstairs, Windows) {channel="mihome:sensor_magnet:158d0001e72ff3:isOpen"}
+Number Door_Tussen_Battery "Tussendeur Battery" <battery> (GF_Downstairs, Windows, Battery) {channel="mihome:sensor_magnet:158d0001e72ff3:batteryLevel"}
+Contact Door_Office "Office Door" (GF_Downstairs, Windows) {channel="mihome:sensor_magnet:158d0001f9e087:isOpen"}
+Number Door_Office_Battery "Office Door Battery" <battery> (GF_Downstairs, Windows, Battery) {channel="mihome:sensor_magnet:158d0001f9e087:batteryLevel"}
+
+Group Sensors
+Number Bathroom_Temperature "Badkamer temperatuur [%d]" (GF_Upstairs, Sensors) {channel="mihome:sensor_ht:158d0001f58fc5:temperature"}
+Number Bathroom_Huminity "Badkamer luchtvochtigheid" (GF_Upstairs, Sensors) {channel="mihome:sensor_ht:158d0001f58fc5:humidity"}
+Number Bathroom_Sensor_Battery "Badkamer battery" <battery> (GF_Downstairs, Battery) {channel="mihome:sensor_ht:158d0001f58fc5:batteryLevel"}
+
+Group Motion
+Group Illumination
+
+Switch Motion_Hal "Motion Hal [%s]" (GF_Downstairs, Motion) {channel="mihome:sensor_motion_aq2:158d000200e61c:motion"}
+Number Motion_MotionTimer_Hal <clock> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000200e61c:motionOffTimer" }
+DateTime Motion_LastMotion_Hal "[%1$tY-%1$tm-%1$td  %1$tH:%1$tM]" <clock-on> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000200e61c:lastMotion" }
+Number Motion_Battery_Hal <battery> (GF_Downstairs, Motion, Battery) { channel="mihome:sensor_motion_aq2:158d000200e61c:batteryLevel" }
+Switch Motion_BatteryLow_Hal <energy> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000200e61c:lowBattery" }
+Number Illumination_Hal "Illumination hal [%d]" (GF_Downstairs, Illumination) {channel="mihome:sensor_motion_aq2:158d000200e61c:illumination"}
+
+Switch Motion_Keuken "Motion Keuken [%s]" (GF_Downstairs, Motion) {channel="mihome:sensor_motion_aq2:158d000200cf9e:motion"}
+Number Motion_MotionTimer_Keuken <clock> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000200cf9e:motionOffTimer" }
+DateTime Motion_LastMotion_Keuken "[%1$tY-%1$tm-%1$td  %1$tH:%1$tM]" <clock-on> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000200cf9e:lastMotion" }
+Number Motion_Battery_Keuken <battery> (GF_Downstairs, Motion, Battery) { channel="mihome:sensor_motion_aq2:158d000200cf9e:batteryLevel" }
+Switch Motion_BatteryLow_Keuken <energy> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000200cf9e:lowBattery" }
+Number Illumination_Keuken "Illumination keuken[%d]" (GF_Downstairs, Illumination) {channel="mihome:sensor_motion_aq2:158d000200cf9e:illumination"}
+
+Switch Motion_Huiskamer "Motion Huiskamer [%s]" (GF_Downstairs, Motion) {channel="mihome:sensor_motion_aq2:158d000200e619:motion"}
+Number Motion_MotionTimer_Huiskamer <clock> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000200e619:motionOffTimer" }
+DateTime Motion_LastMotion_Huiskamer "[%1$tY-%1$tm-%1$td  %1$tH:%1$tM]" <clock-on> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000200e619:lastMotion" }
+Number Motion_Battery_Huiskamer <battery> (GF_Downstairs, Motion, Battery) { channel="mihome:sensor_motion_aq2:158d000200e619:batteryLevel" }
+Switch Motion_BatteryLow_Huiskamer <energy> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000200e619:lowBattery" }
+Number Illumination_Huiskamer "Illumination huiskamer [%d]" (GF_Downstairs, Illumination) {channel="mihome:sensor_motion_aq2:158d000200e619:illumination"}
+
+Switch Motion_Trap_Boven "Motion Trap boven [%s]" (FF_Upstairs, Motion) {channel="mihome:sensor_motion_aq2:158d0001e5fd00:motion"}
+Number Motion_MotionTimer_Trap_Boven <clock> (FF_Upstairs, Motion) { channel="mihome:sensor_motion_aq2:158d0001e5fd00:motionOffTimer" }
+DateTime Motion_LastMotion_Trap_Boven "[%1$tY-%1$tm-%1$td  %1$tH:%1$tM]" <clock-on> (FF_Upstairs, Motion) { channel="mihome:sensor_motion_aq2:158d0001e5fd00:lastMotion" }
+Number Motion_Battery_Trap_Boven <battery> (FF_Upstairs, Motion, Battery) { channel="mihome:sensor_motion_aq2:158d0001e5fd00:batteryLevel" }
+Switch Motion_BatteryLow_Trap_Boven <energy> (FF_Upstairs, Motion) { channel="mihome:sensor_motion_aq2:158d0001e5fd00:lowBattery" }
+Number Illumination_Trap_Boven "Illumination trap boven [%d]" (FF_Upstairs, Illumination) {channel="mihome:sensor_motion_aq2:158d0001e5fd00:illumination"}
+
+Switch Motion_Trap_Beneden "Motion Trap beneden [%s]" (GF_Downstairs, Motion) {channel="mihome:sensor_motion_aq2:158d000200e5d3:motion"}
+Number Motion_MotionTimer_Trap_Beneden <clock> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d0001e5fd00:motionOffTimer" }
+DateTime Motion_LastMotion_Trap_Beneden "[%1$tY-%1$tm-%1$td  %1$tH:%1$tM]" <clock-on> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000200e5d3:lastMotion" }
+Number Motion_Battery_Trap_Beneden <battery> (GF_Downstairs, Battery) { channel="mihome:sensor_motion_aq2:158d000200e5d3:batteryLevel" }
+Switch Motion_BatteryLow_Trap_Beneden <energy> (GF_Downstairs)  { channel="mihome:sensor_motion_aq2:158d000200e5d3:lowBattery" }
+Number Illumination_Trap_Beneden "Illumination trap beneden [%d]" (GF_Downstairs, Illumination) {channel="mihome:sensor_motion_aq2:158d000200e5d3:illumination"}
+
+Switch Motion_Aanrecht_Status "Motion Aanrecht [%s]" (GF_Downstairs, Motion) {channel="mihome:sensor_motion_aq2:158d000236b277:motion"}
+Number Motion_MotionTimer_Aanrecht <clock> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000236b277:motionOffTimer" }
+DateTime Motion_LastMotion_Aanrecht "[%1$tY-%1$tm-%1$td  %1$tH:%1$tM]" <clock-on> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000236b277:lastMotion" }
+Number Motion_Battery_Aanrecht <battery> (GF_Downstairs, Battery) { channel="mihome:sensor_motion_aq2:158d000236b277:batteryLevel" }
+Switch Motion_BatteryLow_Aanrecht <energy> (GF_Downstairs)  { channel="mihome:sensor_motion_aq2:158d000236b277:lowBattery" }
+Number Illumination_Aanrecht "Illumination aanrecht [%d]" (GF_Downstairs, Illumination) {channel="mihome:sensor_motion_aq2:158d000236b277:illumination"}
+
+Switch Motion_Hal_Achter_Status "Motion Hal Achter [%s]" (GF_Downstairs, Motion) {channel="mihome:sensor_motion_aq2:158d000237a87c:motion"}
+Number Motion_MotionTimer_Hal_Achter <clock> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000237a87c:motionOffTimer" }
+DateTime Motion_LastMotion_Hal_Achter "[%1$tY-%1$tm-%1$td  %1$tH:%1$tM]" <clock-on> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000237a87c:lastMotion" }
+Number Motion_Battery_Hal_Achter <battery> (GF_Downstairs, Battery) { channel="mihome:sensor_motion_aq2:158d000237a87c:batteryLevel" }
+Switch Motion_BatteryLow_Hal_Achter <energy> (GF_Downstairs)  { channel="mihome:sensor_motion_aq2:158d000237a87c:lowBattery" }
+Number Illumination_Hal_Achter "Illumination hal achter [%d]" (GF_Downstairs, Illumination) {channel="mihome:sensor_motion_aq2:158d000237a87c:illumination"}
+
+Switch Motion_Schuur_Status "Motion Schuur [%s]" (GF_Downstairs, Motion) {channel="mihome:sensor_motion_aq2:158d000236b417:motion"}
+Number Motion_MotionTimer_Schuur <clock> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000236b417:motionOffTimer" }
+DateTime Motion_LastMotion_Schuur "[%1$tY-%1$tm-%1$td  %1$tH:%1$tM]" <clock-on> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000236b417:lastMotion" }
+Number Motion_Battery_Schuur <battery> (GF_Downstairs, Battery) { channel="mihome:sensor_motion_aq2:158d000236b417:batteryLevel" }
+Switch Motion_BatteryLow_Schuur <energy> (GF_Downstairs)  { channel="mihome:sensor_motion_aq2:158d000236b417:lowBattery" }
+Number Illumination_Schuur "Illumination schuur [%d]" (GF_Downstairs, Illumination) {channel="mihome:sensor_motion_aq2:158d000236b417:illumination"}
+
+Switch Motion_Toilet_Status "Motion Toilet [%s]" (GF_Downstairs, Motion) {channel="mihome:sensor_motion_aq2:158d0002371e4b:motion"}
+Number Motion_MotionTimer_Toilet <clock> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d0002371e4b:motionOffTimer" }
+DateTime Motion_LastMotion_Toilet "[%1$tY-%1$tm-%1$td  %1$tH:%1$tM]" <clock-on> (GF_Downstairs, Motion) { channel="mihome:sensor_motion_aq2:158d0002371e4b:lastMotion" }
+Number Motion_Battery_Toilet <battery> (GF_Downstairs, Battery) { channel="mihome:sensor_motion_aq2:158d0002371e4b:batteryLevel" }
+Switch Motion_BatteryLow_Toilet <energy> (GF_Downstairs)  { channel="mihome:sensor_motion_aq2:158d0002371e4b:lowBattery" }
+Number Illumination_Toilet "Illumination Toilet [%d]" (GF_Downstairs, Illumination) {channel="mihome:sensor_motion_aq2:158d0002371e4b:illumination"}
+
+Switch Motion_Bedroom_Status "Motion Slaapkamer [%s]" (FF_Upstairs, Motion) {channel="mihome:sensor_motion_aq2:158d0002371e4b:motion"}
+Number Motion_MotionTimer_Bedroom <clock> (FF_Upstairs, Motion) { channel="mihome:sensor_motion_aq2:158d0002371e4b:motionOffTimer" }
+DateTime Motion_LastMotion_Bedroom "[%1$tY-%1$tm-%1$td  %1$tH:%1$tM]" <clock-on> (FF_Upstairs, Motion) { channel="mihome:sensor_motion_aq2:158d0002371e4b:lastMotion" }
+Number Motion_Battery_Bedroom <battery> (FF_Upstairs, Battery) { channel="mihome:sensor_motion_aq2:158d0002371e4b:batteryLevel" }
+Switch Motion_BatteryLow_Bedroom <energy> (FF_Upstairs)  { channel="mihome:sensor_motion_aq2:158d0002371e4b:lowBattery" }
+Number Illumination_Bedroom "Illumination bedroom [%d]" (FF_Upstairs, Illumination) {channel="mihome:sensor_motion_aq2:158d0002371e4b:illumination"}
+
+Switch Motion_Office "Motion werkkamer [%s]" (FF_Upstairs, Motion) {channel="mihome:sensor_motion_aq2:158d000204c131:motion"}
+Number Motion_MotionTimer_Office <clock> (FF_Upstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000204c131:motionOffTimer" }
+DateTime Motion_LastMotion_Office "[%1$tY-%1$tm-%1$td  %1$tH:%1$tM]" <clock-on> (FF_Upstairs, Motion) { channel="mihome:sensor_motion_aq2:158d000204c131:lastMotion" }
+Number Motion_Battery_Office <battery> (FF_Upstairs, Battery) { channel="mihome:sensor_motion_aq2:158d000204c131:batteryLevel" }
+Switch Motion_BatteryLow_Office <energy> (FF_Upstairs)  { channel="mihome:sensor_motion_aq2:158d000204c131:lowBattery" }
+Number Illumination_Office "Illumination office [%d]" (FF_Upstairs, Illumination) {channel="mihome:sensor_motion_aq2:158d000204c131:illumination"}
+
+Switch Motion_Status_Voortuin "Motion voortuin [%s]" (GF_Downstairs, Motion) {channel="zwave:device:230436c3:node14:sensor_binary"}
+Switch Motion_Alarm_Voortuin "Motion voortuin alarm [%s]" <alarm> (GF_Downstairs) {channel="zwave:device:230436c3:node14:alarm_general"}
+Number Motion_Battery_Voortuin <battery> (GF_Downstairs, Battery) { channel="zwave:device:230436c3:node14:battery-level" }
+
+DateTime LastMotion "[%1$tm/%1$td %1$tH:%1$tM]"
+Switch Motion_rule_1   "Motion_rule_1"
+Switch Motion_rule_2   "Motion_rule_2"
+Switch Motion_rule_3   "Motion_rule_3"
+Switch Motion_rule_4   "Motion_rule_4"
+Switch Motion_rule_5   "Motion_rule_5"
+
+
+// Xiaomi gateway
+
+Switch Gateway_AddDevice { channel="mihome:bridge:7811dce16995:joinPermission" }
+Switch Gateway_LightSwitch <light> { channel="mihome:bridge:7811dce16995:brightness" }
+Dimmer Gateway_Brightness <dimmablelight> { channel="mihome:bridge:7811dce16995:brightness" }
+Color Gateway_Color <rgb> { channel="mihome:bridge:7811dce16995:color" }
+Dimmer Gateway_ColorTemperature <heating> { channel="mihome:bridge:7811dce16995:colorTemperature" }
+Number Gateway_AmbientLight <sun> { channel="mihome:bridge:7811dce16995:illumination" }
+Number Gateway_Sound <soundvolume-0> { channel="mihome:bridge:7811dce16995:sound" }
+Switch Gateway_SoundSwitch <soundvolume_mute> { channel="mihome:bridge:7811dce16995:enableSound" }
+Dimmer Gateway_SoundVolume <soundvolume> { channel="mihome:bridge:7811dce16995:volume" }
+
+// Xiaomi Switch - see "xiaomi.rules" for action triggers
+Number Switch_Overloop_Battery <battery> (Battery) { channel="mihome:sensor_switch:158d00014a0580:batteryLevel" }
+Switch Switch_Overloop_BatteryLow <energy> { channel="mihome:sensor_switch:158d00014a0580:lowBattery" }
+Number Switch_Bed_Battery <battery> (Battery) { channel="mihome:sensor_switch:158d0001874120:batteryLevel" }
+Switch Switch_Bed_BatteryLow <energy> { channel="mihome:sensor_switch:158d0001874120:lowBattery" }
+Number Switch_Bedroom_Battery <battery> (Battery) { channel="mihome:sensor_switch:158d00014a130f:batteryLevel" }
+Switch Switch_Bedroom_BatteryLow <energy> { channel="mihome:sensor_switch:158d00014a130f:lowBattery" }
+Number Switch_Trap_Battery <battery> (Battery) { channel="mihome:sensor_switch:158d000149b345:batteryLevel" }
+Switch Switch_Trap_BatteryLow <energy> { channel="mihome:sensor_switch:158d000149b345:lowBattery" }
+Number Switch_Kitchentable_Battery <battery> (Battery) { channel="mihome:sensor_switch:158d00019ccf9d:batteryLevel" }
+Switch Switch_Kitchentable_BatteryLow <energy> { channel="mihome:sensor_switch:158d00019ccf9d:lowBattery" }
+
+Number Switch_Bathroom_Battery <battery> (Battery) { channel="mihome:sensor_switch:158d000186debf:batteryLevel" }
+Switch Switch_Bathroom_BatteryLow <energy> { channel="mihome:sensor_switch:158d000186debf:lowBattery" }
+Number Switch_Office_Battery <battery> (Battery) { channel="mihome:sensor_switch:158d000186de0f:batteryLevel" }
+Switch Switch_Office_BatteryLow <energy> { channel="mihome:sensor_switch:158d000186de0f:lowBattery" }
+Number Switch_Livingroom_Battery <battery> (Battery) { channel="mihome:sensor_switch:158d000186dddc:batteryLevel" }
+Switch Switch_Livingroom_BatteryLow <energy> { channel="mihome:sensor_switch:158d000186dddc:lowBattery" }
+
+
+Switch Switch_hold_Overloop { default="OFF", expire="50s" }
+Switch Switch_hold_Bed { default="OFF", expire="50s" }
+Switch Switch_hold_Bedroom { default="OFF", expire="40s" }
+Switch Switch_hold_Trap { default="OFF", expire="50s" }
+Switch Switch_hold_Kitchentable { default="OFF", expire="50s" }
+Switch Switch_hold_Bathroom { default="OFF", expire="50s" }
+Switch Switch_hold_Office { default="OFF", expire="50s" }
+Switch Switch_hold_Livingroom { default="OFF", expire="50s" }
+Switch Switch_hold_direction
+
+Switch Switch_Night_Mode { default="OFF" }
+
+Number chart_bathroom_period "periode"
+Number chart_battery_period "periode"
+Number chart_illumination_period "periode"
+Number chart_deurbel_period "Periode"
+Number chart_dsmr_delivery_period "Periode"
+Number chart_meter "Periode"
+Number chart_gas_meter "Periode"
+
+// Deurbel
+Group Deurbel
+Switch Deurbel_1 "Deurbel drukker [%s]" <frontdoor> (GF_Downstairs, Deurbel) {channel="zwave:device:230436c3:node11:switch_binary"}
+Switch Deurbel_2 "Deurbel 2 [%s]" <alarm> {channel="zwave:device:230436c3:node11:switch_binary1"}
+Switch Deurbel_3 "Deurbel [%s]" <alarm> (GF_Downstairs, Deurbel) {channel="zwave:device:230436c3:node11:switch_binary2"}
+Switch Deurbel_Enable <switch> (Deurbel) { default="ON" }
+Number Deurbel_Duur "Deurbel ring time [%d sec], 0 for unlimited" <time> (Deurbel) { default="0" }
+Number Deurbel_Flood_protection "Max rings within 3 minutes [%s rings], 0 for unlimited" <lock> (Deurbel) { default="5" }
+Number Deurbel_Count_3mins "Rings past 3 minutes [%s]" <lock> (Deurbel)
+Number Deurbel_Count "Rings counter [%s]" <lock> (Deurbel)
+Switch Deurbel_Sonos "Sonos notificatie [%s]" <sound> (Deurbel)
+Switch Brievenbus_Sonos "Brievenbus Sonos notificatie [%s]" <sound> (Deurbel)
+
+// Electricity and gas
+Group Energy
+Number dsmr_power "Actual power usage [%.3f kW]" <energy> (Energy) { dsmr="eActualDelivery" }
+Number dsmr_eDeliveryTariff0 "Total meter delivery tariff 0 [%.3f kW]" <energy> (Energy) { dsmr="eDeliveryTariff0" }
+Number dsmr_eDeliveryTariff1 "Total meter delivery tariff 1 [%.3f kW]" <energy> (Energy) { dsmr="eDeliveryTariff1" }
+Number dsmr_eDeliveryTariff2 "Total meter delivery tariff 2 [%.3f kW]" <energy> (Energy) { dsmr="eDeliveryTariff2" }
+Number dsmr_gas_hourly "Gasmeter [%.5f m3]" <energy> (Energy) { dsmr="gValue" }
+Number dsmr_gas_buffer "Gasmeter buffer [%.3f m3]" <energy> (Energy) { dsmr="gValueX" }
+Switch Debug "debug"

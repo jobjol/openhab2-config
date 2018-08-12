@@ -1,0 +1,402 @@
+import org.eclipse.xtext.xbase.lib.Functions
+import java.util.Map
+import org.eclipse.smarthome.core.library.types.DecimalType
+import org.openhab.core.library.types.*
+// an array of timers for each lighting zone
+val Map<String, Timer> lightTimers = newHashMap
+// an array of countdown functions, a workaround for rescheduling
+val Map<String, Object> lightTickers = newHashMap
+
+// lambda function for recursive countdown timers i.e.
+// a timer that can re-call itself upon expiry for a periodic effect
+// param1 = Number Item counter
+// param2 = the timer map array (so it can be cancelled)
+// param3 = the function array, needed for recursion
+// param4 = recursive function itself
+// We host it in a Map because the Timer will not have access to change the global var itself
+// but can make a call on the Map if we pass it into the lambda to update the contents.
+
+//val org.eclipse.xtext.xbase.lib.Functions$Function4 doCountdown = [
+//	NumberItem myDelay,
+//	Map<String, Timer> timersMap,
+//	Map<String, Object> functionMap,
+//	org.eclipse.xtext.xbase.lib.Functions$Function4 makeTicker |
+//		val int ddelay = (myDelay.state as DecimalType).intValue
+//		logInfo("testing", myDelay.name)
+//		timersMap.put(myDelay.name, null)  // destruct old
+//		if(ddelay > 0) {
+//			timersMap.put(myDelay.name, createTimer(now.plusMinutes(1)) [ |
+//				myDelay.postUpdate(ddelay-1)
+//				functionMap.put(myDelay.name, makeTicker.apply(myDelay, timersMap, functionMap, makeTicker))
+//                                ]
+//			)
+//		} else {
+//			functionMap.put(myDelay.name, null)
+//
+//                            // if you want to update Items here, you will need to pass those into the lambda as well
+//                            // I chose instead to have rules triggered from counter Item changing to 0
+//		}
+//]
+
+// send an integer minute count for start or reschedule, or 0 for abort
+
+//rule "Timeout setting"
+//	when
+//		Item Countdown_Werkkamer_Plafond__Scene_Motion received command or
+//		Item Countdown_Overloop_Plafond__Scene_Motion received command or
+//		Item Countdown_Shed__Scene_Motion received command or
+//    Item Countdown_Shed_Garden__Scene_Motion received command or
+//    Item Countdown_Garden__Scene_Motion received command or
+//    Item Countdown_Garden_2__Scene_Motion received command or
+//    Item Countdown_Frontdoor_1__Scene_Motion received command or
+//    Item Countdown_Frontdoor_2__Scene_Motion received command or
+//    Item Countdown_Front_Garden_Left__Scene_Motion received command or
+//    Item Countdown_Front_Garden_Right__Scene_Motion received command or
+//    Item Countdown_Hallway__Scene_Motion received command or
+//    Item Countdown_Kitchen_Table_Light__Scene_Motion received command or
+//    Item Countdown_Living_Room_Towers__Scene_Motion received command or
+//    Item Countdown_Bedroom_Color_Temp__Scene_Motion received command or
+//    Item Countdown_Living_Room__Scene_Motion received command or
+//    Item Countdown_Hal_Achter_Color__Scene_Motion received command or
+//    Item Countdown_Toilet__Scene_Motion received command
+//	then
+//    val oldTimer = lightTimers.get(triggeringItem.name)
+//    if (oldTimer !== null) {
+//      logInfo("testing", "cancel existing ticker")
+//      oldTimer.cancel
+//      lightTimers.put(triggeringItem.name, null)
+//      lightTickers.put(triggeringItem.name, null)
+//    }
+//    if (triggeringItem.state > 0) {
+//      logInfo("testing", "ticker startup")
+//      var target = triggeringItem
+//      lightTickers.put(triggeringItem.name, doCountdown.apply(target, lightTimers, lightTickers, doCountdown))
+//    } else {
+//      logInfo("testing", "countdown zeroed")
+//
+//    }
+//end
+
+rule "Countdown timers"
+when
+  System started or // run at system start in case the time changed when OH was offline
+  Time cron "0 * * * * ?"   // every minute
+then
+  Countdown.members.filter[l|l.state > 0].forEach[l| val int s = (l.state as DecimalType).intValue - 1
+    l.sendCommand(s) ]
+end
+
+// Toilet
+
+rule "Toilet trigger"
+	when
+		Item Door_Toilet changed to OPEN or
+		Item Motion_LastMotion_Toilet received update
+	then
+	    if (Enable_Motion_Toilet__Scene_Motion.state == ON && Illumination_Toilet.state < Illumination_Motion_Toilet__Scene_Motion.state) {
+        Countdown_Toilet__Scene_Motion.sendCommand((Duration_Motion_Toilet__Scene_Motion.state as DecimalType).intValue)
+        if (Switch_Night_Mode.state == ON) {
+          Light_Toilet__Motion.sendCommand((Light_Toilet__Scene_Motion_Night.state as DecimalType).intValue)
+        }
+        else {
+          Light_Toilet__Motion.sendCommand((Light_Toilet__Scene_Motion.state as DecimalType).intValue)
+        }
+      }
+
+end
+
+rule "Toilet trigger uit"
+	when
+		Item Countdown_Toilet__Scene_Motion changed to 0
+	then
+      Light_Toilet__Motion.sendCommand(0)
+end
+
+rule "Toilet trigger uit"
+	when
+		Item Door_Toilet changed to OPEN
+	then
+	    if (Countdown_Toilet__Scene_Motion.state > 0) {
+        Light_Toilet__Motion.sendCommand(0)
+        Countdown_Toilet__Scene_Motion.sendCommand(0)
+      }
+end
+
+
+
+// Werkkamer color bulb
+
+rule "Werkkamer motion trigger"
+	when
+		Item Door_Office changed to OPEN or
+		Item Motion_LastMotion_Office received update
+	then
+	    if (Enable_Motion_Werkkamer_Plafond__Scene_Motion.state == ON && Illumination_Office.state <= Illumination_Motion_Werkkamer_Plafond__Scene_Motion.state) {
+        Countdown_Werkkamer_Plafond__Scene_Motion.sendCommand((Duration_Motion_Werkkamer_Plafond__Scene_Motion.state as DecimalType).intValue)
+        if (Switch_Night_Mode.state == ON && Enable_NightMotion_Werkkamer_Plafond__Scene_Motion.state == ON) {
+            Light_Werkkamer_Plafond_color__Motion.sendCommand((Light_Werkkamer_Plafond_color__Scene_Motion_Night.state).toString)
+            Light_Werkkamer_Plafond__Motion.sendCommand((Light_Werkkamer_Plafond__Scene_Motion_Night.state as DecimalType).intValue)
+        }
+        else {
+          Light_Werkkamer_Plafond__Motion.sendCommand((Light_Werkkamer_Plafond__Scene_Motion.state as DecimalType).intValue)
+          Light_Werkkamer_Plafond_color__Motion.sendCommand((Light_Werkkamer_Plafond_color__Scene_Motion.state).toString)
+        }
+      }
+
+end
+
+rule "werkkamer motion uit"
+	when
+		Item Countdown_Werkkamer_Plafond__Scene_Motion changed to 0
+	then
+      Light_Werkkamer_Plafond__Motion.sendCommand(0)
+end
+
+// Hal Achter color bulb
+
+rule "Hal Achter motion trigger"
+	when
+		Item Door_Achter_Binnen changed to OPEN or
+		Item Door_Achter changed to OPEN or
+		Item Motion_LastMotion_Hal_Achter received update
+	then
+	    if (Enable_Motion_Hal_Achter__Scene_Motion.state == ON && Illumination_Hal_Achter.state < Illumination_Motion_Hallway__Scene_Motion.state) {
+        Countdown_Hal_Achter_Color__Scene_Motion.sendCommand((Duration_Motion_Hal_Achter__Scene_Motion.state as DecimalType).intValue)
+        if (Switch_Night_Mode.state == ON && Enable_NightMotion_Hal_Achter_Color__Scene_Motion.state == ON) {
+            Light_Hal_Achter_Color__Motion.sendCommand((Light_Hal_Achter_Color__Scene_Motion_Night.state).toString)
+            Light_Hal_Achter__Motion.sendCommand((Light_Hal_Achter__Scene_Motion_Night.state as DecimalType).intValue)
+        }
+        else {
+          Light_Hal_Achter__Motion.sendCommand((Light_Hal_Achter__Scene_Motion.state as DecimalType).intValue)
+          Light_Hal_Achter_Color__Motion.sendCommand((Light_Hal_Achter_Color__Scene_Motion.state).toString)
+        }
+      }
+
+end
+
+rule "Hal achter motion uit"
+	when
+		Item Countdown_Hal_Achter_Color__Scene_Motion changed to 0
+	then
+      Light_Hal_Achter__Motion.sendCommand(0)
+end
+
+// Aanrecht dimmer
+
+rule "Aanrecht motion trigger"
+	when
+		Item Motion_LastMotion_Aanrecht received update
+	then
+	    if (Enable_Motion_Kitchen__Scene_Motion.state == ON && Illumination_Aanrecht.state < Illumination_Motion_Kitchen__Scene_Motion.state) {
+        Countdown_Kitchen__Scene_Motion.sendCommand((Duration_Motion_Kitchen__Scene_Motion.state as DecimalType).intValue)
+        if (Switch_Night_Mode.state == ON && Enable_NightMotion_Kitchen__Scene_Motion.state == ON) {
+          Light_Kitchen__Motion.sendCommand((Light_Kitchen__Scene_Motion_Night.state as DecimalType).intValue)
+        }
+        else {
+          Light_Kitchen__Motion.sendCommand((Light_Kitchen__Scene_Motion.state as DecimalType).intValue)
+        }
+      }
+
+end
+
+rule "Aanrecht motion uit"
+	when
+		Item Countdown_Kitchen__Scene_Motion changed to 0
+	then
+       Light_Kitchen__Motion.sendCommand(0)
+end
+
+// Schuur switch
+
+rule "Schuur motion trigger"
+	when
+		Item Motion_LastMotion_Schuur received update
+	then
+	    if (Enable_Motion_Shed__Scene_Motion.state == ON && Illumination_Schuur.state < Illumination_Motion_Shed__Scene_Motion.state) {
+        Countdown_Shed__Scene_Motion.sendCommand((Duration_Motion_Shed__Scene_Motion.state as DecimalType).intValue)
+          Light_Schuur__Motion.sendCommand(ON)
+      }
+
+end
+
+rule "Schuur motion uit"
+	when
+		Item Countdown_Shed__Scene_Motion changed to 0
+	then
+       Light_Schuur__Motion.sendCommand(OFF)
+end
+
+// Overloop color bulb
+
+rule "Overloop motion trigger"
+	when
+		Item Door_Bedroom changed to OPEN or
+		Item Door_Office changed to OPEN or
+		Item Motion_LastMotion_Trap_Boven received update
+	then
+	    if (Enable_Motion_Overloop_Plafond__Scene_Motion.state == ON && Illumination_Trap_Boven.state < Illumination_Motion_Overloop_Plafond__Scene_Motion.state) {
+        Countdown_Overloop_Plafond__Scene_Motion.sendCommand((Duration_Motion_Overloop_Plafond__Scene_Motion.state as DecimalType).intValue)
+        if (Switch_Night_Mode.state == ON && Enable_NightMotion_Overloop_Plafond__Scene_Motion.state == ON) {
+            Light_Overloop_Plafond_color__Motion.sendCommand((Light_Overloop_Plafond_color__Scene_Motion_Night.state).toString)
+            Light_Overloop_Plafond__Motion.sendCommand((Light_Overloop_Plafond__Scene_Motion_Night.state as DecimalType).intValue)
+        }
+        else {
+          Light_Overloop_Plafond__Motion.sendCommand((Light_Hal_Achter__Scene_Motion.state as DecimalType).intValue)
+          Light_Overloop_Plafond_color__Motion.sendCommand((Light_Hal_Achter_Color__Scene_Motion.state).toString)
+        }
+      }
+
+end
+
+rule "Overloop motion uit"
+	when
+		Item Countdown_Hal_Achter_Color__Scene_Motion changed to 0
+	then
+       Light_Overloop_Plafond__Motion.sendCommand(0)
+end
+
+// Hal color bulb
+
+rule "Hal motion trigger"
+	when
+	  Item Door_Toilet changed to OPEN or
+	  Item Door_Front changed to OPEN or
+		Item Door_Tussen changed to OPEN or
+		Item Motion_LastMotion_Hal received update or
+		Item Deurbel_1 changed to ON or
+		Item Motion_LastMotion_Trap_Beneden received update
+	then
+	    if (Enable_Motion_Hallway__Scene_Motion.state == ON && Illumination_Hal.state < Illumination_Motion_Hallway__Scene_Motion.state) {
+        Countdown_Hallway__Scene_Motion.sendCommand((Duration_Motion_Hallway__Scene_Motion.state as DecimalType).intValue)
+        if (Switch_Night_Mode.state == ON && Enable_NightMotion_Hallway__Scene_Motion.state == ON) {
+            Light_Hallway__Motion.sendCommand((Light_Hallway__Scene_Motion_Night.state as DecimalType).intValue)
+        }
+        else {
+          Light_Hallway__Motion.sendCommand((Light_Hallway__Scene_Motion.state as DecimalType).intValue)
+        }
+      }
+
+end
+
+rule "Hal motion uit"
+	when
+		Item Countdown_Hal_Achter_Color__Scene_Motion changed to 0
+	then
+       Light_Hallway__Motion.sendCommand(0)
+end
+
+// Keukentafel color bulb
+
+rule "Keukentafel motion trigger"
+	when
+		Item Motion_LastMotion_Keuken received update
+	then
+	    if (Enable_Motion_Kitchen_Table_Light__Scene_Motion.state == ON && Illumination_Keuken.state < Illumination_Motion_Kitchen_Table_Light__Scene_Motion.state) {
+        Countdown_Kitchen_Table_Light__Scene_Motion.sendCommand((Duration_Motion_Kitchen_Table_Light__Scene_Motion.state as DecimalType).intValue)
+        if (Switch_Night_Mode.state == ON && Enable_NightMotion_Kitchen_Table_Light__Scene_Motion.state == ON) {
+            Light_Kitchen_Table_Light_color__Motion.sendCommand((Light_Kitchen_Table_Light_color__Scene_Motion_Night.state).toString)
+            Light_Kitchen_Table_Light__Motion.sendCommand((Light_Kitchen_Table_Light__Scene_Motion_Night.state as DecimalType).intValue)
+        }
+        else {
+          Light_Kitchen_Table_Light__Motion.sendCommand((Light_Kitchen_Table_Light__Scene_Motion.state as DecimalType).intValue)
+          Light_Kitchen_Table_Light_color__Motion.sendCommand((Light_Kitchen_Table_Light_color__Scene_Motion.state).toString)
+        }
+      }
+
+end
+
+rule "Keukentafel motion uit"
+	when
+		Item Countdown_Kitchen_Table_Light__Scene_Motion changed to 0
+	then
+       Light_Kitchen_Table_Light__Motion.sendCommand(0)
+end
+
+// Tuinverlichting color bulbs
+
+rule "Tuinverlichting motion trigger"
+	when
+		Item Motion_LastMotion_Schuur received update or
+		Item Door_Achter changed to OPEN
+	then
+//	    if (Enable_Motion_Garden__Scene_Motion.state == ON) {
+//        Countdown_Garden__Scene_Motion.sendCommand((Duration_Motion_Garden__Scene_Motion.state as DecimalType).intValue)
+//        if (Switch_Night_Mode.state == ON && Enable_NightMotion_Garden__Scene_Motion.state == ON) {
+//            Light_Garden_color__Motion.sendCommand((Light_Garden_color__Scene_Motion_Night.state).toString)
+//            Light_Garden_2_color__Motion.sendCommand((Light_Garden_color__Scene_Motion_Night.state).toString)
+//            Light_Garden__Motion.sendCommand((Light_Garden__Scene_Motion_Night.state as DecimalType).intValue)
+//            Light_Garden_2__Motion.sendCommand((Light_Garden__Scene_Motion_Night.state as DecimalType).intValue)
+//        }
+//        else {
+//          Light_Garden_color__Motion.sendCommand((Light_Garden_color__Scene_Motion.state).toString)
+//          Light_Garden_2_color__Motion.sendCommand((Light_Garden_color__Scene_Motion.state).toString)
+//          Light_Garden__Motion.sendCommand((Light_Garden__Scene_Motion.state as DecimalType).intValue)
+//          Light_Garden_2__Motion.sendCommand((Light_Garden__Scene_Motion.state as DecimalType).intValue)
+//        }
+//      }
+
+end
+
+rule "Tuinverlichting motion uit"
+	when
+		Item Countdown_Garden__Scene_Motion changed to 0
+	then
+       Light_Garden__Motion.sendCommand(0)
+       Light_Garden_2__Motion.sendCommand(0)
+end
+
+// Woonkamer color
+
+rule "woonkamer color motion trigger"
+	when
+		Item Motion_LastMotion_Huiskamer received update or
+		Item Door_Achter_Binnen changed to OPEN or
+		Item Door_Tussen changed to OPEN
+	then
+	    if (Enable_Motion_Living_Room__Scene_Motion.state == ON && Illumination_Huiskamer.state < Illumination_Motion_Living_Room__Scene_Motion.state) {
+        Countdown_Living_Room__Scene_Motion.sendCommand((Duration_Motion_Living_Room__Scene_Motion.state as DecimalType).intValue)
+        if (Switch_Night_Mode.state == ON && Enable_NightMotion_Living_Room__Scene_Motion.state == ON) {
+            Light_Living_Room_Color__Motion.sendCommand((Light_Living_Room_Color__Scene_Motion_Night.state).toString)
+            Light_Living_Room__Motion.sendCommand((Light_Living_Room__Scene_Motion_Night.state as DecimalType).intValue)
+        }
+        else {
+          Light_Living_Room_Color__Motion.sendCommand((Light_Living_Room_Color__Scene_Motion.state).toString)
+          Light_Living_Room__Motion.sendCommand((Light_Living_Room__Scene_Motion.state as DecimalType).intValue)
+        }
+      }
+
+end
+
+rule "Woonkamer color motion uit"
+	when
+		Item Countdown_Living_Room__Scene_Motion changed to 0
+	then
+       Light_Living_Room__Motion.sendCommand(0)
+end
+
+rule "woonkamer zuilen dimmer motion trigger"
+	when
+		Item Motion_LastMotion_Huiskamer received update or
+		Item Door_Achter_Binnen changed to OPEN or
+		Item Door_Tussen changed to OPEN
+	then
+	    if (Enable_Motion_Living_Room_Towers__Scene_Motion.state == ON && Illumination_Huiskamer.state < Illumination_Motion_Living_Room_Towers__Scene_Motion.state) {
+        Countdown_Living_Room_Towers__Scene_Motion.sendCommand((Duration_Motion_Living_Room_Towers__Scene_Motion.state as DecimalType).intValue)
+        if (Switch_Night_Mode.state == ON && Enable_NightMotion_Living_Room_Towers__Scene_Motion.state == ON) {
+            Light_Living_Room_Towers__Motion.sendCommand((Light_Living_Room__Scene_Motion_Night.state as DecimalType).intValue)
+        }
+        else {
+            Light_Living_Room_Towers__Motion.sendCommand((Light_Living_Room__Scene_Motion.state as DecimalType).intValue)
+        }
+      }
+
+end
+
+rule "Woonkamer zuilen dimmer motion uit"
+	when
+		Item Countdown_Living_Room_Towers__Scene_Motion changed to 0
+	then
+       Light_Living_Room_Towers__Motion.sendCommand(0)
+end
+
+

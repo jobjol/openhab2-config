@@ -1,0 +1,270 @@
+// Imports
+import org.openhab.core.library.types.*
+import org.openhab.core.persistence.*
+import org.openhab.model.script.actions.*
+
+val String LOG = "Xiaomi switch"
+val Boolean pressed = false
+
+
+
+
+rule "Xiaomi Switch overloop"
+when
+    Channel "mihome:sensor_switch:158d00014a0580:button" triggered
+then
+    var actionName = receivedEvent.getEvent()
+    switch(actionName) {
+        case "SHORT_PRESSED": {
+                    logInfo(LOG, 'Button overloop Short pressed')
+                     if (Light_Overloop_Plafond.state == 0)
+                     {
+                          Light_Overloop_Plafond__Button.sendCommand(Light_Overloop_Plafond.previousState(true, "influxdb").state as Number)
+                     }
+                     else {
+                        Light_Overloop_Plafond__Button.sendCommand(0)
+                     }
+                }
+        case "DOUBLE_PRESSED": {
+            logInfo(LOG, 'Button overloop double pressed')
+        }
+        case "LONG_PRESSED": {
+          Switch_hold_Overloop.sendCommand(ON)
+        }
+        case "LONG_RELEASED": {
+            Switch_hold_Overloop.sendCommand(OFF)
+            logInfo(LOG, 'Button overloop long released')
+        }
+    }
+end
+
+rule "Xiaomi Switch bed"
+when
+    Channel "mihome:sensor_switch:158d0001874120:button" triggered
+then
+    var actionName = receivedEvent.getEvent()
+    switch(actionName) {
+        case "SHORT_PRESSED": {
+            logInfo(LOG, 'Button bed Short pressed')
+             if (Light_Bedroom.state == 0)
+             {
+                  if (Switch_Night_Mode.state == ON) {
+                    Light_Bedroom__Button.sendCommand(2)
+                  }
+                  else {
+                    Light_Bedroom__Button.sendCommand(100)
+                  }
+
+             }
+             else {
+                Light_Bedroom__Button.sendCommand(0)
+                sendHttpGetRequest("http://127.0.0.1:5005/slaapkamer/say/Een%20aangename%20nacht%20toegewenst/nl-nl")
+             }
+        }
+        case "DOUBLE_PRESSED": {
+            logInfo(LOG, 'Button bed double pressed')
+            if (Switch_Night_Mode.state == OFF) {
+                          Switch_Night_Mode.sendCommand(ON)
+                          sendHttpGetRequest("http://127.0.0.1:5005/slaapkamer/say/nacht%20mode%20is%20ingesteld%20op%20actief%20tot%20zonsopkomst.%20Slaap%20zacht/nl-nl")
+                        }
+                        else {
+                          Switch_Night_Mode.sendCommand(OFF)
+                          sendHttpGetRequest("http://127.0.0.1:5005/slaapkamer/say/machtmode%20is%20uitgeschakeld/nl-nl")
+                        }
+        }
+        case "LONG_PRESSED": {
+            logInfo(LOG, 'Button bed Long pressed')
+            Switch_hold_Bed.sendCommand(ON)
+        }
+        case "LONG_RELEASED": {
+            logInfo(LOG, 'Button bed long released')
+            Switch_hold_Bed.sendCommand(OFF)
+        }
+    }
+end
+
+rule "Xiaomi Switch bedroom"
+when
+    Channel "mihome:sensor_switch:158d00014a130f:button" triggered // or Item Motion_Trap_Boven changed to ON
+then
+    var actionName = receivedEvent.getEvent()
+    switch(actionName) {
+        case "SHORT_PRESSED": {
+            logInfo(LOG, 'Button bedroom Short pressed')
+             if (Light_Bedroom.state == 0)
+             {
+                  if (Switch_Night_Mode.state == ON) {
+                    Light_Bedroom__Button.sendCommand(2)
+                  }
+                  else {
+                    Light_Bedroom__Button.sendCommand(100)
+                  }
+             }
+             else {
+                Light_Bedroom__Button.sendCommand(0)
+             }
+        }
+        case "DOUBLE_PRESSED": {
+           if (Switch_Night_Mode.state == OFF) {
+             Switch_Night_Mode.sendCommand(ON)
+             sendHttpGetRequest("http://127.0.0.1:5005/slaapkamer/say/nacht%20mode%20is%20ingesteld%20op%20actief%20tot%20zonsopkomst.%20Slaap%20zacht/nl-nl")
+           }
+           else {
+             Switch_Night_Mode.sendCommand(OFF)
+             sendHttpGetRequest("http://127.0.0.1:5005/slaapkamer/say/machtmode%20is%20uitgeschakeld/nl-nl")
+           }
+
+        }
+        case "LONG_PRESSED": {
+            logInfo(LOG, 'Button bedroom Long pressed')
+            Switch_hold_Bedroom.sendCommand(ON)
+        }
+        case "LONG_RELEASED": {
+            logInfo(LOG, 'Button bedroom long released')
+            Switch_hold_Bedroom.sendCommand(OFF)
+        }
+    }
+end
+
+rule "Xiaomi Switch trap beneden"
+when
+    Channel "mihome:sensor_switch:158d000149b345:button" triggered
+then
+    var actionName = receivedEvent.getEvent()
+    switch(actionName) {
+        case "SHORT_PRESSED": {
+                            logInfo(LOG, 'Button trap beneden Short pressed')
+                             if (Light_Overloop_Plafond.state == 0)
+                             {
+                                  Light_Overloop_Plafond__Button.sendCommand(Light_Overloop_Plafond.previousState(true, "influxdb").state as Number)
+                             }
+                             else {
+                                Light_Overloop_Plafond__Button.sendCommand(0)
+                             }
+                        }
+        case "DOUBLE_PRESSED": {
+            logInfo(LOG, 'Button trap beneden double pressed')
+        }
+        case "LONG_PRESSED": {
+            logInfo(LOG, 'Button trap beneden Long pressed')
+        }
+        case "LONG_RELEASED": {
+            logInfo(LOG, 'Button trap beneden long released')
+        }
+    }
+end
+
+rule "Xiaomi Switch keuken"
+when
+    Channel "mihome:sensor_switch:158d00019ccf9d:button" triggered
+then
+    var actionName = receivedEvent.getEvent()
+    switch(actionName) {
+        case "SHORT_PRESSED": {
+            logInfo(LOG, 'Button keuken short pressed')
+            if (Light_Living_Room.state == 0 && Light_Living_Room_Towers.state == 0)
+             {
+                  Light_Living_Room__Button.sendCommand(Light_Living_Room.previousState(true, "influxdb").state as Number)
+                  Light_Living_Room_Towers__Button.sendCommand(Light_Living_Room_Towers.previousState(true, "influxdb").state as Number)
+             }
+             else {
+                Light_Living_Room__Button.sendCommand(0)
+                Light_Living_Room_Towers__Button.sendCommand(0)
+             }
+        }
+        case "DOUBLE_PRESSED": {
+            logInfo(LOG, 'Button keuken double pressed')
+            if (Light_Kitchen_Table_Light.state == 0 && Light_Kitchen.state == 0)
+             {
+                  Light_Kitchen_Table_Light__Button.sendCommand(Light_Kitchen_Table_Light.previousState(true, "influxdb").state as Number)
+                  Light_Kitchen__Button.sendCommand(Light_Kitchen.previousState(true, "influxdb").state as Number)
+             }
+             else {
+                Light_Kitchen_Table_Light__Button.sendCommand(0)
+                Light_Kitchen__Button.sendCommand(0)
+             }
+        }
+        case "LONG_PRESSED": {
+            logInfo(LOG, 'Button keuken Long pressed')
+        }
+        case "LONG_RELEASED": {
+            logInfo(LOG, 'Button keuken long released')
+        }
+    }
+end
+
+rule "Xiaomi Switch living"
+when
+    Channel "mihome:sensor_switch:158d000186dddc:button" triggered
+then
+    var actionName = receivedEvent.getEvent()
+    switch(actionName) {
+        case "SHORT_PRESSED": {
+            logInfo(LOG, 'Button living short pressed')
+            if (Light_Living_Room.state == 0 && Light_Living_Room_Towers.state == 0)
+             {
+                  Light_Living_Room__Button.sendCommand(Light_Living_Room.previousState(true, "influxdb").state as Number)
+                  Light_Living_Room_Towers__Button.sendCommand(Light_Living_Room_Towers.previousState(true, "influxdb").state as Number)
+             }
+             else {
+                Light_Living_Room__Button.sendCommand(0)
+                Light_Living_Room_Towers__Button.sendCommand(0)
+             }
+        }
+        case "DOUBLE_PRESSED": {
+            logInfo(LOG, 'Button keuken double pressed')
+            if (Light_Kitchen_Table_Light.state == 0 && Light_Kitchen.state == 0)
+             {
+                  Light_Kitchen_Table_Light__Button.sendCommand(Light_Kitchen_Table_Light.previousState(true, "influxdb").state as Number)
+                  Light_Kitchen__Button.sendCommand(Light_Kitchen.previousState(true, "influxdb").state as Number)
+             }
+             else {
+                Light_Kitchen_Table_Light__Button.sendCommand(0)
+                Light_Kitchen__Button.sendCommand(0)
+             }
+        }
+        case "LONG_PRESSED": {
+            logInfo(LOG, 'Button keuken Long pressed')
+        }
+        case "LONG_RELEASED": {
+            logInfo(LOG, 'Button keuken long released')
+        }
+    }
+end
+
+rule "Xiaomi Switch office"
+when
+    Channel "mihome:sensor_switch:158d000186de0f:button" triggered
+then
+    var actionName = receivedEvent.getEvent()
+    switch(actionName) {
+        case "SHORT_PRESSED": {
+            logInfo(LOG, 'Button office short pressed')
+            if (Light_Werkkamer_Plafond__Proxy.state == 0 )
+             {
+                  Light_Werkkamer_Plafond__Button.sendCommand(Light_Werkkamer_Plafond__Proxy.previousState(true, "influxdb").state as Number)
+             }
+             else {
+                Light_Werkkamer_Plafond__Button.sendCommand(0)
+             }
+        }
+        case "DOUBLE_PRESSED": {
+            logInfo(LOG, 'Button office double pressed')
+            if (Light_Werkkamer_Plafond__Proxy.state == 0 )
+             {
+                  Light_Werkkamer_Plafond__Button.sendCommand(Light_Werkkamer_Plafond__Proxy.previousState(true, "influxdb").state as Number)
+             }
+             else {
+                Light_Werkkamer_Plafond__Button.sendCommand(0)
+             }
+        }
+        case "LONG_PRESSED": {
+            logInfo(LOG, 'Button office Long pressed')
+            Switch_hold_Office.sendCommand(ON)
+        }
+        case "LONG_RELEASED": {
+            logInfo(LOG, 'Button office long released')
+            Switch_hold_Office.sendCommand(OFF)
+        }
+    }
+end

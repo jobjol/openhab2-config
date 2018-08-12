@@ -1,0 +1,27 @@
+rule "Bed Hoofd Marielle"
+	when
+		Item Bed_Marielle_Hoofd received command
+	then
+	      sendHttpGetRequest("http://192.168.2.18/head1/" + receivedCommand)
+end
+
+rule "Bed Voet Marielle"
+	when
+		Item Bed_Marielle_Voet received command
+	then
+	  sendHttpGetRequest("http://192.168.2.18/tail1/" + receivedCommand)
+end
+
+rule "Bed Hoofd Job"
+	when
+		Item Bed_Job_Hoofd received command
+	then
+    sendHttpGetRequest("http://192.168.2.18/head2/" + receivedCommand)
+end
+
+rule "Bed Voet Job"
+	when
+		Item Bed_Job_Voet received command
+	then
+	      sendHttpGetRequest("http://192.168.2.18/tail2/" + receivedCommand)
+end
